@@ -38,7 +38,7 @@ const OrderDetail = ({ accountId }) => {
     return `${year}${month}${day}`;
   };
   const getPaymentColor = (status) => {
-    return status === "Chưa thanh toán" ? "#FF9933" : "#4caf50";
+    return status === "Chưa thanh toán" ? "#FF9933" : "#FFC1C1";
   };
   const formatCurrency = (amount) => {
     return new Intl.NumberFormat('vi-VN', { style: 'currency', currency: 'VND' }).format(amount).replace('₫', '₫');
@@ -55,7 +55,7 @@ const OrderDetail = ({ accountId }) => {
           <TableContainer component={Paper}>
             <Table aria-label="order details table">
               <TableHead>
-                <TableRow sx={{ backgroundColor: "#008b4b" }}>
+                <TableRow sx={{ backgroundColor: "#FFC1C1" }}>
                   <TableCell sx={{ color: "#fff" }}>Đơn hàng</TableCell>
                   <TableCell sx={{ color: "#fff" }}>Ngày</TableCell>
                   <TableCell sx={{ color: "#fff" }}>Địa chỉ</TableCell>

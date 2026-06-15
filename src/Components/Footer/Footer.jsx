@@ -9,17 +9,17 @@ const Footer = () => {
     <div style={styles.footerContainer}>
       <div style={styles.footerSection}>
         <img
-          src="https://nongsanantam.com/wp-content/uploads/2023/12/nongsanantam.com_.png" 
-          alt="OrganicFood" 
-          style={styles.logo}
+          img src="https://res.cloudinary.com/dvvshh1iv/image/upload/v1743273927/logoweb_tu4udj.png" 
+          alt="PetFood Logo" 
+          style={{ ...styles.logo, width: "100px", height: "100px", objectFit: "cover" }}
         />
         <p style={styles.description}>
-          Organic Food- Siêu thị trực tuyến mua sắm nông sản, chất lượng, tươi xanh.<br />
+          PetShop Food- Siêu thị trực tuyến mua sắm thức ăn, đồ dùng cho thú cưng của bạn.<br />
           <span style={styles.highlight}>Giá siêu tốt - Giao siêu tốc.</span>
         </p>
         <p style={styles.contact}>
           <strong>Địa chỉ:</strong> 79/3 Lê Văn Chí Phường Linh Trung, TP.HCM<br />
-          <strong>Điện thoại:</strong> 0855005506<br />
+          <strong>Điện thoại:</strong> 1900 6750<br />
           <strong>Email:</strong> hiucutee@gmail.com
         </p>
       </div>
@@ -30,7 +30,7 @@ const Footer = () => {
             <li 
               key={index} 
               style={styles.link}
-              onMouseEnter={(e) => e.target.style.color = '#28a745'}
+              onMouseEnter={(e) => e.target.style.color = '#FFC1C1'}
               onMouseLeave={(e) => e.target.style.color = '#333'}
             >
               {item}
@@ -45,7 +45,7 @@ const Footer = () => {
             <li 
               key={index} 
               style={styles.link}
-              onMouseEnter={(e) => e.target.style.color = '#28a745'}
+              onMouseEnter={(e) => e.target.style.color = '#FFC1C1'}
               onMouseLeave={(e) => e.target.style.color = '#333'}
             >
               {item}
@@ -97,7 +97,7 @@ const styles = {
     color: '#333',
   },
   highlight: {
-    color: '#28a745',
+    color: '#FFC1C1',
     fontWeight: 'bold',
   },
   contact: {
@@ -106,7 +106,7 @@ const styles = {
   },
   sectionTitle: {
     fontSize: '16px',
-    color: '#28a745',
+    color: '#FFC1C1',
     fontWeight: 'bold',
     marginBottom: '10px',
   },

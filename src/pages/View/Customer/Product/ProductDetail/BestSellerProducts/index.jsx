@@ -120,7 +120,7 @@ const BestSellerProducts = () => {
                   </Typography>
                   <Button
                     variant="contained"
-                    sx={{ backgroundColor: '#008b4b', color: '#fff', marginTop: 1 }}
+                    sx={{ backgroundColor: '#FFC1C1', color: '#fff', marginTop: 1 }}
                     onClick={() => addToCart(product.id)}
                   >
                     Thêm vào giỏ

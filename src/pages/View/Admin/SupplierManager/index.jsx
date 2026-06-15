@@ -29,8 +29,6 @@ import {
 } from "@mui/icons-material";
 import Dashboard from "../index";
 import SupplierEdit from "../SupplierManager/Edit";
-
-// Import API functions
 import { fetchAllSuppliersAPI, deleteSuppliersAPI } from "../../../../apis";
 
 const SupplierManager = styled.div`
@@ -39,29 +37,49 @@ const SupplierManager = styled.div`
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 `;
+
 const StyledTableContainer = styled(TableContainer)`
   margin-top: 16px;
+  border-radius: 8px;
+  overflow: hidden;
 `;
 
 const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   th,
   td {
-    padding: 12px;
-    border: 1px solid #ccc;
+    padding: 16px;
+    border: 1px solid #FFC1C1;
     text-align: center;
   }
 
   th {
-    background-color: #f8f9fa;
+    background-color: #FFC1C1;
+    font-weight: bold;
+    color: #333;
+  }
+
+  td {
+    color: #555;
+  }
+
+  tr:hover {
+    background-color: #f9f9f9;
+  }
+
+  &:last-child {
+    td {
+      border-bottom: none;
+    }
   }
 `;
 
 const StyledTableCell = styled(TableCell)`
   && {
-    border: 1px solid #cccc;
+    border: 1px solid #FFC1C1;
     padding: 8px;
     text-align: center;
     vertical-align: middle;
@@ -98,14 +116,13 @@ const SupplierIndex = () => {
   const [searchDescription, setSearchDescription] = useState("");
 
   useEffect(() => {
-    // Fetch suppliers when component mounts
     fetchAllSuppliers();
   }, []);
 
   const fetchAllSuppliers = async () => {
     try {
-      const response = await fetchAllSuppliersAPI(); 
-      setsuppliers(response); 
+      const response = await fetchAllSuppliersAPI();
+      setsuppliers(response);
     } catch (error) {
       console.error("Error fetching suppliers:", error);
     }
@@ -118,7 +135,6 @@ const SupplierIndex = () => {
       name,
       description,
     };
-    // For demo purposes, add the new supplier locally
     setsuppliers([...suppliers, newsupplier]);
     setName("");
     setDescription("");
@@ -136,7 +152,7 @@ const SupplierIndex = () => {
 
   const handleDeleteConfirm = async () => {
     try {
-      await deleteSuppliersAPI(deletesupplierId); // Replace with your delete API call
+      await deleteSuppliersAPI(deletesupplierId);
       const updatedsuppliers = suppliers.filter(
         (supplier) => supplier.id !== deletesupplierId
       );
@@ -184,8 +200,6 @@ const SupplierIndex = () => {
     setSearchName(event.target.value);
   };
 
-
-
   const handleResetSearch = () => {
     setSearchName("");
   };
@@ -211,7 +225,6 @@ const SupplierIndex = () => {
               onChange={handleSearchNameChange}
             />
           </Grid>
-         
           <Grid item xs={12} sm={12} style={{ textAlign: "right" }}>
             <Button
               variant="outlined"
@@ -230,7 +243,7 @@ const SupplierIndex = () => {
             </Button>
             <Button
               variant="contained"
-              style={{ backgroundColor: "#4caf50" }}
+              style={{ backgroundColor: "#FFC1C1" }}
               component={Link}
               to="/admin/suppliermanager/create"
             >
@@ -242,18 +255,18 @@ const SupplierIndex = () => {
         <StyledTableContainer component={Paper}>
           <StyledTable>
             <TableHead>
-              <StyledTableRow>
+              <TableRow>
                 <StyledTableCell>ID</StyledTableCell>
                 <StyledTableCell>Tên loại sản phẩm</StyledTableCell>
                 <StyledTableCell>Địa chỉ</StyledTableCell>
                 <StyledTableCell>Số điện thoại</StyledTableCell>
                 <StyledTableCell>Ngày Tạo</StyledTableCell>
                 <StyledTableCell>Tác vụ</StyledTableCell>
-              </StyledTableRow>
+              </TableRow>
             </TableHead>
             <TableBody>
               {filteredsuppliers.map((supplier) => (
-                <TableRow key={supplier.id}>
+                <StyledTableRow key={supplier.id}>
                   <TableCell>{supplier.id}</TableCell>
                   <TableCell>{supplier.name}</TableCell>
                   <TableCell>{supplier.address}</TableCell>
@@ -269,14 +282,13 @@ const SupplierIndex = () => {
                       <DeleteOutlineOutlinedIcon color="error" />
                     </MuiIconButton>
                   </TableCell>
-                </TableRow>
+                </StyledTableRow>
               ))}
             </TableBody>
           </StyledTable>
         </StyledTableContainer>
       </SupplierManager>
 
-      {/* Edit supplier Dialog */}
       <SupplierEdit
         open={openEditDialog}
         onClose={() => setOpenEditDialog(false)}
@@ -284,7 +296,6 @@ const SupplierIndex = () => {
         onSave={handleSaveEdit}
       />
 
-      {/* Delete Confirmation Dialog */}
       <Dialog
         open={openDeleteDialog}
         onClose={() => setOpenDeleteDialog(false)}
@@ -307,7 +318,6 @@ const SupplierIndex = () => {
         </DialogActions>
       </Dialog>
 
-      {/* Snackbar */}
       <Snackbar
         open={snackbar.open}
         autoHideDuration={6000}

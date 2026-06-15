@@ -64,22 +64,21 @@ const ProductEdit = ({ open, onClose, product, onSave }) => {
     const selectedCategory = categories.find(cat => cat.id === categoryId);
     setEditedProduct((prev) => ({
       ...prev,
-      category: selectedCategory
+      category_id: categoryId,  // Cập nhật category_id
+      category: selectedCategory,  // Cập nhật category
     }));
   };
+  
   const handleSupplierChange = (e) => {
-    const SupplierId = e.target.value;
-    // Chuyển đổi SupplierId thành số nếu cat.id là số
-    const selectedSupplier = suppliers.find(cat => cat.id === Number(SupplierId));
-    setEditedProduct((prev) => {
-      const updatedProduct = {
-        ...prev,
-        supplier: selectedSupplier
-      };
-      console.log("Updated Product:", updatedProduct); // Kiểm tra giá trị đã cập nhật
-      return updatedProduct;
-    });
+    const supplierId = e.target.value;
+    const selectedSupplier = suppliers.find(sup => sup.id === Number(supplierId));
+    setEditedProduct((prev) => ({
+      ...prev,
+      supplier_id: supplierId,  // Cập nhật supplier_id
+      supplier: selectedSupplier,  // Cập nhật supplier
+    }));
   };
+  
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (file) {
@@ -95,7 +94,11 @@ const ProductEdit = ({ open, onClose, product, onSave }) => {
   };
   const handleSave = async () => {
     try {
-      const updatedProduct = await updateProductAPI(editedProduct.id, editedProduct);
+      const updatedProduct = await updateProductAPI(editedProduct.id, {
+        ...editedProduct,
+        category_id: editedProduct.category_id,
+        supplier_id: editedProduct.supplier_id,
+      });
       onSave(updatedProduct);
       console.log("dataUpdateProduct: ",editedProduct)
       onClose();
@@ -260,7 +263,7 @@ const ProductEdit = ({ open, onClose, product, onSave }) => {
           variant="contained"
           component="label"
           style={{
-            backgroundColor: "#4caf50",
+            backgroundColor: "#FFC1C1",
             marginTop: "16px",
           }}
         >
@@ -294,7 +297,7 @@ const ProductEdit = ({ open, onClose, product, onSave }) => {
           <Button
             variant="contained"
             style={{
-              backgroundColor: "#4caf50",
+              backgroundColor: "#FFC1C1",
               padding: "10px 20px",
             }}
             onClick={handleSave}

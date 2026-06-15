@@ -27,7 +27,7 @@ import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
 import Dashboard from "../index";
 import NewsEdit from "./Edit";
 import styled from "styled-components";
-import { fetchAllNewsAPI, deleteNewsAPI } from '../../../../apis'; // Import fetchAllNewsAPI and deleteNewsAPI
+import { fetchAllNewsAPI, deleteNewsAPI } from '../../../../apis';
 
 const NewsManager = () => {
   const [news, setNews] = useState([]);
@@ -107,7 +107,7 @@ const NewsManager = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      await deleteNewsAPI(newsToDelete.id); // Assuming deleteNewsAPI takes news ID as argument
+      await deleteNewsAPI(newsToDelete.id);
       setNews((prevNews) =>
         prevNews.filter((newsItem) => newsItem.id !== newsToDelete.id)
       );
@@ -140,8 +140,8 @@ const NewsManager = () => {
   const handleFilterChange = (e) => {
     setFilterDate(e.target.value);
   };
-  const [expandedNewsId, setExpandedNewsId] = useState(null);
 
+  const [expandedNewsId, setExpandedNewsId] = useState(null);
 
   const filteredNews = news.filter((newsItem) => {
     const matchesSearch = newsItem.title.toLowerCase().includes(searchTerm.toLowerCase());
@@ -207,36 +207,35 @@ const NewsManager = () => {
             </Button>
           </Grid>
         </Grid>
-        <TableContainer component={Paper} style={{ marginTop: 16 }}>
+        <StyledTableContainer component={Paper}>
           <StyledTable>
             <TableHead>
               <TableRow>
-                <TableCell align="center">ID</TableCell>
-                <TableCell align="center">Hình ảnh</TableCell>
-                <TableCell align="center">Tiêu đề</TableCell>
-                <TableCell align="center">Mô tả</TableCell>
-                <TableCell align="center">Ngày</TableCell>
-                <TableCell align="center">Tác vụ</TableCell>
+                <StyledTableCell align="center">ID</StyledTableCell>
+                <StyledTableCell align="center">Hình ảnh</StyledTableCell>
+                <StyledTableCell align="center">Tiêu đề</StyledTableCell>
+                <StyledTableCell align="center">Mô tả</StyledTableCell>
+                <StyledTableCell align="center">Ngày</StyledTableCell>
+                <StyledTableCell align="center">Tác vụ</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {filteredNews.map((newsItem) => (
-                <TableRow key={newsItem.id}>
+                <StyledTableRow key={newsItem.id}>
                   <TableCell align="center">{newsItem.id}</TableCell>
                   <TableCell align="center">
                     <img src={newsItem.image} alt={newsItem.title} style={{ width: 100 }} />
                   </TableCell>
-                  <StyledTableCell align="center">{newsItem.title}</StyledTableCell>
-                  <StyledTableCell align="center">
+                  <TableCell align="center">{newsItem.title}</TableCell>
+                  <TableCell align="center">
                     {expandedNewsId === newsItem.id ? (
-                      newsItem.description // Render full description if expanded
+                      newsItem.description
                     ) : (
-                      `${newsItem.description.substring(0, 100)}...` // Otherwise, show truncated description
+                      `${newsItem.description.substring(0, 100)}...`
                     )}
-                   
-                  </StyledTableCell>
-                  <StyledTableCell align="center">{newsItem.date}</StyledTableCell>
-                  <StyledTableCell align="center">
+                  </TableCell>
+                  <TableCell align="center">{newsItem.date}</TableCell>
+                  <TableCell align="center">
                     <IconButton
                       color="secondary"
                       onClick={() => handleEditClick(newsItem)}
@@ -249,12 +248,12 @@ const NewsManager = () => {
                     >
                       <DeleteOutlineOutlinedIcon />
                     </IconButton>
-                  </StyledTableCell>
-                </TableRow>
+                  </TableCell>
+                </StyledTableRow>
               ))}
             </TableBody>
           </StyledTable>
-        </TableContainer>
+        </StyledTableContainer>
       </NewsManagerContainer>
 
       <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmDialog}>
@@ -303,28 +302,66 @@ const NewsManagerContainer = styled.div`
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 `;
-const StyledTableCell = styled(TableCell)`
+
+const StyledTableContainer = styled(TableContainer)`
+  margin-top: 16px;
+  border-radius: 8px;
+  overflow: hidden;
 `;
+
 const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   th,
   td {
-    padding: 12px;
-    border: 1px solid #ccc;
+    padding: 16px;
+    border: 1px solid #FFC1C1;
     text-align: center;
   }
 
   th {
-    background-color: #f8f9fa;
+    background-color: #FFC1C1;
+    font-weight: bold;
+    color: #333;
   }
 
-  
+  td {
+    color: #555;
+  }
+
+  tr:hover {
+    background-color: #f9f9f9;
+  }
+
+  &:last-child {
+    td {
+      border-bottom: none;
+    }
+  }
 `;
+
+const StyledTableCell = styled(TableCell)`
+  && {
+    border: 1px solid #FFC1C1;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+  }
+`;
+
 const StyledTableRow = styled(TableRow)`
-  &:nth-of-type(odd) {
+  &:not(:first-child) {
+    &:hover {
+      background-color: #f1f1f1;
+      cursor: pointer;
+    }
+  }
+
+  &:nth-of-type(even) {
     background-color: #f9f9f9;
   }
 `;
+
 export default NewsManager;

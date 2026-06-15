@@ -84,7 +84,7 @@ const RoleEdit = ({ open, onClose, role, onSave }) => {
           <Button
             variant="contained"
             style={{
-              backgroundColor: "#4caf50",
+              backgroundColor: "#FFC1C1",
               padding: "10px 20px",
             }}
             onClick={handleSave}

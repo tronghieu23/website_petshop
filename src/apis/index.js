@@ -1,27 +1,26 @@
 import axios from 'axios';
-
 export const loginAPI = async (credentials) => {
-    const response = await axios.post('http://localhost:8080/api/account/login', credentials);
+    const response = await axios.post('http://localhost:8080/api/accounts/login', credentials);
     return response.data;
 };
 export const signupAPI = async (userData) => {
-    const response = await axios.post('http://localhost:8080/api/account/signup', userData);
+    const response = await axios.post('http://localhost:8080/api/accounts/signup', userData);
     return response.data;
 };
 
 export const fetchAllUserAPI = async () => {
-    const response = await axios.get(`http://localhost:8080/api/account/all`);
+    const response = await axios.get(`http://localhost:8080/api/accounts/all`);
     return response.data;
 };
 
 export const fetchUserInfoAPI = async (userId) => {
-    const response = await axios.get(`http://localhost:8080/api/account/${userId}`);
+    const response = await axios.get(`http://localhost:8080/api/accounts/${userId}`);
     return response.data;
 };
 
 export const updateUserAPI = async (userId, updateData) =>
 {
-    const response = await axios.put(`http://localhost:8080/api/account/update/${userId}`,updateData)
+    const response = await axios.put(`http://localhost:8080/api/accounts/${userId}`,updateData)
     return response.data;
 }
 //Role 
@@ -50,19 +49,19 @@ export const deleteRoleAPI = async (RoleId) => {
 
 //Internal
 export const GetAllInternalAPI = async () => {
-    const response = await axios.get(`http://localhost:8080/api/account/internal`);
+    const response = await axios.get(`http://localhost:8080/api/accounts/internal`);
     return response.data;
 };
 export const fetchCountCustomerAPI = async () => {
-    const response = await axios.get(`http://localhost:8080/api/account/count/customers`);
+    const response = await axios.get(`http://localhost:8080/api/accounts/count/customers`);
     return response.data;
 };
 export const GetAllCustomerAPI = async () => {
-    const response = await axios.get(`http://localhost:8080/api/account/customers`);
+    const response = await axios.get(`http://localhost:8080/api/accounts/customers`);
     return response.data;
 };
 export const CreateInternalAPI = async (updateData, requesterId) => {
-    const response = await axios.post('http://localhost:8080/api/account/create', updateData, {
+    const response = await axios.post('http://localhost:8080/api/accounts/create', updateData, {
         headers: {
             'requester-id': requesterId
         }
@@ -71,7 +70,7 @@ export const CreateInternalAPI = async (updateData, requesterId) => {
 }
 
 export const updateInternalAPI = async (UserId, updateData, requesterId) => {
-    const response = await axios.put(`http://localhost:8080/api/account/update/internal/${UserId}`, updateData, {
+    const response = await axios.put(`http://localhost:8080/api/accounts/update/internal/${UserId}`, updateData, {
         headers: {
             'requester-id': requesterId
         }
@@ -80,7 +79,7 @@ export const updateInternalAPI = async (UserId, updateData, requesterId) => {
 }
 
 export const deleteUserAPI = async (UserId, requesterId) => {
-    const response = await axios.delete(`http://localhost:8080/api/account/delete/${UserId}`, {
+    const response = await axios.delete(`http://localhost:8080/api/accounts/delete/${UserId}`, {
         headers: {
             'requester-id': requesterId
         }
@@ -143,7 +142,7 @@ export const deleteSuppliersAPI = async (supplierId) => {
 };
 //product
 export const fetchManagerAdminProductsAPI = async () => {
-    const response = await axios.get(`http://localhost:8080/api/product/admin`);
+    const response = await axios.get(`http://localhost:8080/api/product`);
     return response.data
 }
 export const fetchAllProductsAPI = async () => {
@@ -178,10 +177,20 @@ export const fetchAllDiscountsAPI = async () => {
     return response.data
 }
 // Cart
-
 export const fetchCartItemsAPI = async (accountId) => {
+    // Nếu accountId là null hoặc undefined, có thể trả về giỏ hàng rỗng hoặc không gửi request
+    if (!accountId) {
+        console.warn("accountId is null or undefined, returning empty cart");
+        return []; // Trả về mảng rỗng thay vì gọi API
+    }
+
+    try {
         const response = await axios.get(`http://localhost:8080/api/cart/${accountId}`);
         return response.data;
+    } catch (error) {
+        console.error("Error fetching cart items:", error);
+        throw error; // Ném lỗi để xử lý ở nơi gọi
+    }
 };
 
 export const addToCartAPI = async (productId, quantity,accountId) => {
@@ -293,7 +302,7 @@ export const fetchAllVoucherForAccountAPI = async (accountId) => {
     const response = await axios.get(`http://localhost:8080/api/vouchers/account/${accountId}`);
     return response.data;
 };
-export const fetchOneVoucherAPI = async (vouchers) => {
+export const fetchOneVoucherAPI = async (vouchersId) => {
     const response = await axios.get(`http://localhost:8080/api/vouchers/${vouchersId}`);
     return response.data;
 };
@@ -309,20 +318,25 @@ export const AccountApplyVoucherAPI = async (accountId, voucherCode) => {
       );
       return response.data; // Giả sử API trả về một đối tượng với trường `isApplied`
     } catch (error) {
+      console.error('Error applying voucher:', error.response ? error.response.data : error.message);
       throw error;
     }
-  };
+};
+
   
-  export const checkVoucherAppliedAPI = async (accountId, voucherCode) => {
+export const checkVoucherAppliedAPI = async (accountId, voucherCode) => {
+    console.log('Checking voucher for:', { accountId, voucherCode }); // Để kiểm tra giá trị
     try {
       const response = await axios.get(
         `http://localhost:8080/api/vouchers/check?accountId=${accountId}&voucherCode=${voucherCode}`
       );
-      return response.data; // Ensure this is the expected field
+      return response.data; // Đảm bảo rằng bạn nhận được đúng dữ liệu mong đợi
     } catch (error) {
+      console.error('Error checking voucher:', error.response ? error.response.data : error.message);
       throw error;
     }
   };
+  
 
 export const updateVoucherAPI = async (vouchersId, newsData) => {
     const response = await axios.put(`http://localhost:8080/api/vouchers/${vouchersId}`, newsData);
@@ -340,6 +354,14 @@ export const initiateVNPAYPaymentAPI = async (orderData) => {
     return response.data;
 }
 
+// MOMO
+export const initiateMoMoPaymentAPI = async (amount, orderInfo) => {
+    const response = await axios.get(`http://localhost:8080/api/payment/momo`, {
+        params: { amount, orderInfo }
+    });
+    return response.data.payUrl;
+};
+
 
 //Coze
 export const sendMessageAPI = async (messageData) => {
@@ -351,3 +373,41 @@ export const fetchSearchSuggestionsAPI = async (query) => {
     const response = await axios.get(`http://localhost:8080/api/search/suggestions?query=${encodeURIComponent(query)}`);
     return response.data;
 };
+
+// comment.js
+
+export const postCommentAPI = async (productId, accountId, content) => {
+  const response = await axios.post(`http://localhost:8080/api/comments`, {
+    productId: productId,   // ✅ camelCase
+    accountId: accountId,   // ✅ camelCase
+    content: content,
+  });
+  return response.data;
+};
+
+export const getCommentAPI = async (productId) => {
+  const response = await axios.get(`http://localhost:8080/api/products/${productId}/comments`);
+  return response.data;
+};
+
+export const deleteCommentAPI = async (commentId) => {
+  const accountId = localStorage.getItem("id"); // hoặc context/state nếu có
+
+  const response = await axios.delete(
+    `http://localhost:8080/api/comments/${commentId}`,
+    {
+      data: { accountId: accountId }, // 👈 camelCase
+    }
+  );
+
+  return response.data;
+};
+
+
+//verify account
+  export const verifyCodeAPI = (data) => axios.post('http://localhost:8080/api/accounts/verify-code', data);
+
+  
+  
+
+

@@ -21,7 +21,11 @@ import { useDropzone } from "react-dropzone";
 import { useNavigate } from "react-router-dom";
 import CloseIcon from "@mui/icons-material/Close";
 import Dashboard from "../index";
-import { CreateProductAPI, fetchAllCategoriesAPI,fetchAllSuppliersAPI } from "../../../../apis";
+import {
+  CreateProductAPI,
+  fetchAllCategoriesAPI,
+  fetchAllSuppliersAPI,
+} from "../../../../apis";
 
 const ProductCreate = () => {
   const [title, setTitle] = useState("");
@@ -35,6 +39,7 @@ const ProductCreate = () => {
   const [discount, setDiscount] = useState("");
   const [suppliers, setsuppliers] = useState([]);
   const [discountExpiration, setDiscountExpiration] = useState("");
+  const [quantity, setQuantity] = useState("");
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -62,13 +67,13 @@ const ProductCreate = () => {
     const fetchSuplliers = async () => {
       try {
         const response = await fetchAllSuppliersAPI();
-        setsuppliers(response || []);  
+        setsuppliers(response || []);
         if (response.length > 0 && !supplierId) {
           setSupplierId(response[0].id);
         }
       } catch (error) {
         console.error("Failed to fetch categories:", error);
-        setCategories([]);  
+        setCategories([]);
       }
     };
 
@@ -91,7 +96,16 @@ const ProductCreate = () => {
     e.preventDefault();
 
     // Validate form
-    if (!title || !description || !price || !categoryId || !expirationDate) {
+    if (
+      !title ||
+      !description ||
+      !price ||
+      !categoryId ||
+      !expirationDate ||
+      !quantity ||
+      !supplierId ||
+      !image
+    ) {
       setSnackbar({
         open: true,
         message: "Vui lòng điền tất cả các trường bắt buộc.",
@@ -103,16 +117,13 @@ const ProductCreate = () => {
     const newProduct = {
       name: title,
       description: description,
-      price: price,
-      image: image, // Use Data URL for image
-      category: {
-        id: categoryId,
-      },
-      supplier:{
-        id:supplierId
-      },
+      price: Number(price), // ép sang số
+      image: image,
+      categoryId: Number(categoryId), // ✅ sửa key
+      supplierId: Number(supplierId), // ✅ sửa key
+      quantity: Number(quantity),
       expirationDate: expirationDate,
-      discount: discount,
+      discount: Number(discount),
       discountExpiration: discountExpiration,
     };
 
@@ -210,7 +221,8 @@ const ProductCreate = () => {
                       onChange={handleImageChange}
                     />
                     <Typography variant="body2">
-                      Kéo hình ảnh của bạn vào đây (Chỉ *.jpeg, *.webp và *.png hình ảnh sẽ được chấp nhận)
+                      Kéo hình ảnh của bạn vào đây (Chỉ *.jpeg, *.webp và *.png
+                      hình ảnh sẽ được chấp nhận)
                     </Typography>
                   </div>
                   {image && (
@@ -218,10 +230,25 @@ const ProductCreate = () => {
                       <img
                         src={image}
                         alt="Selected"
-                        style={{ width: "100px", height: "100px", objectFit: "cover" }}
+                        style={{
+                          width: "100px",
+                          height: "100px",
+                          objectFit: "cover",
+                        }}
                       />
                     </Box>
-                     )}
+                  )}
+                </Grid>
+                <Grid item xs={12}>
+                  <TextField
+                    fullWidth
+                    label="Số lượng"
+                    value={quantity}
+                    onChange={(e) => setQuantity(e.target.value)}
+                    required
+                    variant="filled"
+                    type="number"
+                  />
                 </Grid>
                 <Grid item xs={12}>
                   <TextField
@@ -251,26 +278,10 @@ const ProductCreate = () => {
                   </FormControl>
                 </Grid>
                 <Grid item xs={12}>
-                  <FormControl fullWidth variant="filled" required>
-                    <InputLabel id="supplier-label">Danh mục</InputLabel>
-                    <Select
-                      labelId="supplier-label"
-                      value={supplierId}
-                      onChange={(e) => setSupplierId(e.target.value)}
-                    >
-                      {suppliers.map((supplier) => (
-                        <MenuItem key={supplier.id} value={supplier.id}>
-                          {supplier.name}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12}>
                   <TextField
                     fullWidth
                     label="Hạn sử dụng"
-                    type="date"
+                    type="datetime-local"
                     value={expirationDate}
                     onChange={(e) => setExpirationDate(e.target.value)}
                     variant="filled"
@@ -320,7 +331,7 @@ const ProductCreate = () => {
                   type="submit"
                   variant="contained"
                   style={{
-                    backgroundColor: "#4caf50",
+                    backgroundColor: "#FFC1C1",
                     color: "white",
                     padding: "10px 20px",
                   }}

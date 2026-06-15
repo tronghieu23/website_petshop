@@ -4,7 +4,7 @@ import { createTheme } from '@mui/material/styles';
 const theme = createTheme({
   palette: {
     primary: {
-      main: '#4caf50', // Adjust the color as needed
+      main: '#FFC1C1', // Adjust the color as needed
     },
     background: {
       paper: '#fff', // Ensure the paper color is defined

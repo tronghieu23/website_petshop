@@ -1,12 +1,12 @@
 import React from 'react';
 
 const brandImages = [
-  'https://bizweb.dktcdn.net/100/514/629/themes/951567/assets/img_brand_1.png?1716945232631',
-  'https://bizweb.dktcdn.net/100/514/629/themes/951567/assets/img_brand_2.png?1716945232631',
-  'https://bizweb.dktcdn.net/100/514/629/themes/951567/assets/img_brand_3.png?1716945232631',
-  'https://bizweb.dktcdn.net/100/514/629/themes/951567/assets/img_brand_4.png?1716945232631',
-  'https://bizweb.dktcdn.net/100/514/629/themes/951567/assets/img_brand_5.png?1716945232631',
-  'https://bizweb.dktcdn.net/100/514/629/themes/951567/assets/img_brand_6.png?1716945232631'
+  'https://res.cloudinary.com/dvvshh1iv/image/upload/v1743351630/Royal-Canin-Logo_wopyuh.png',
+  'https://res.cloudinary.com/dvvshh1iv/image/upload/v1743351985/Smart_Heart_CMYK_na685l.png',
+  'https://res.cloudinary.com/dvvshh1iv/image/upload/v1743352139/whiskas_p5u58l.png',
+  'https://res.cloudinary.com/dvvshh1iv/image/upload/v1743352216/Me-O-e1628584648517_bwk6us.png',
+  'https://res.cloudinary.com/dvvshh1iv/image/upload/v1743352287/nekkologo_ppyqmq.png',
+  'https://res.cloudinary.com/dvvshh1iv/image/upload/v1743352351/ganadorlogo_q5iqjc.png '
 ];
 
 const PartnerLogos = () => {

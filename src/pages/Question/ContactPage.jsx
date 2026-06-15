@@ -11,7 +11,7 @@ const ContactPage = () => {
     <div style={styles.container}>
       <div style={styles.contactInfo}>
         <h2 style= {{fontSize :'16px ' ,textTransform : 'uppercase'}} >NƠI GIẢI ĐÁP TOÀN BỘ MỌI THẮC MẮC CỦA BẠN? </h2>
-        <p style={{ marginBottom : '-15px'}}>Organic Food - Siêu thị trực tuyến mua sắm nông sản, chất lượng, tươi xanh.</p>
+        <p style={{ marginBottom : '-15px'}}>PetShop Food- Siêu thị trực tuyến mua sắm thức ăn, đồ dùng cho thú cưng của bạn.</p>
         <p style={styles.highlight}>Giá siêu tốt - Giao siêu tốc.</p>
         
         <div style={styles.infoItem}>
@@ -34,7 +34,7 @@ const ContactPage = () => {
           <div style={styles.icon}>&#x260E;</div>
           <div>
             <strong>Hotline</strong>
-            <p style={ {marginTop : '-2px'}}>0855005506</p>
+            <p style={ {marginTop : '-2px'}}>1900 6750</p>
           </div>
         </div>
 
@@ -42,7 +42,7 @@ const ContactPage = () => {
           <div style={styles.icon}>&#x2709;</div>
           <div>
             <strong>Email</strong>
-            <p style={ {marginTop : '-2px'}}>tincui012@gmail</p>
+            <p style={ {marginTop : '-2px'}}>hiucutee@gmail.com</p>
           </div>
         </div>
         
@@ -89,7 +89,7 @@ const styles = {
     color : '#222f3e'
   },
   highlight: {
-    color: '#badc58',
+    color: '#FFC1C1',
   
   },
 
@@ -108,10 +108,10 @@ const styles = {
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    border: ' 1px ,solid ,#008b4b',
+    border: ' 1px ,solid ,#FFC1C1',
     borderRadius: '50%',
     marginRight: '10px',
-    color : '#badc58'
+    color : '#FFC1C1'
   },
   contactForm: {
     marginTop: '20px',
@@ -138,7 +138,7 @@ const styles = {
   },
   button: {
     padding: '10px 20px',
-    backgroundColor: 'green',
+    backgroundColor: 'FFC1C1',
     color: 'white',
     border: 'none',
     cursor: 'pointer',

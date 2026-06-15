@@ -157,7 +157,7 @@ const InternalEdit = ({ open, onClose, user, onSave }) => {
             variant="contained"
             component="label"
             style={{
-              backgroundColor: "#4caf50",
+              backgroundColor: "#FFC1C1",
               marginTop: "16px",
             }}
           >
@@ -208,7 +208,7 @@ const InternalEdit = ({ open, onClose, user, onSave }) => {
             <Button
               variant="contained"
               style={{
-                backgroundColor: "#4caf50",
+                backgroundColor: "#FFC1C1",
                 padding: "10px 20px",
               }}
               onClick={handleSave}

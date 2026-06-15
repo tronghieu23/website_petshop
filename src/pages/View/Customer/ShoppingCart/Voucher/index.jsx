@@ -142,7 +142,7 @@ const VoucherDialog = ({ open, onClose, onApplyVoucher }) => {
               <ListItem>
                 <Grid container alignItems="center">
                   <Grid item xs={2}>
-                    <Typography variant="h6" style={{ color: 'green', fontWeight: 'bold' }}>
+                    <Typography variant="h6" style={{ color: '#FFC1C1', fontWeight: 'bold' }}>
                       {voucher.code === 'FREESHIP' ? '0K' : voucher.code.replace(/\D/g, '')}
                     </Typography>
                   </Grid>

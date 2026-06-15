@@ -51,7 +51,7 @@ const CategoryEdit = ({ open, onClose, category, onSave }) => {
       onClose(); // Close the drawer
     } catch (error) {
       console.error("Failed to update category:", error);
-      // Handle error (e.g., show error message)
+      setError(error?.response?.data?.message || error.message || "Đã xảy ra lỗi khi cập nhật danh mục");
     }
   };
 
@@ -106,7 +106,7 @@ const CategoryEdit = ({ open, onClose, category, onSave }) => {
           label="Phần trăm khuyến mãi (%)"
           name="discount"
           type="number"
-          value={editedCategory?.discount || ""}
+          value={editedCategory?.discount !== undefined ? editedCategory.discount : ""}
           onChange={handleChange}
           variant="filled"
           InputProps={{ style: { backgroundColor: "#f9f9f9" } }}
@@ -142,7 +142,7 @@ const CategoryEdit = ({ open, onClose, category, onSave }) => {
           <Button
             variant="contained"
             style={{
-              backgroundColor: "#4caf50",
+              backgroundColor: "#FFC1C1",
               padding: "10px 20px",
             }}
             onClick={handleSave}

@@ -23,9 +23,8 @@ import {
 } from "@mui/material";
 import { fetchAllOrdersAPI, updateOrderAPI, deleteOrderAPI } from "../../../../apis";
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import { Phone } from "@mui/icons-material";
-const OrderIndex = () => {
 
+const OrderIndex = () => {
   const [orders, setOrders] = useState([]);
   const [filteredOrders, setFilteredOrders] = useState([]);
   const [filters, setFilters] = useState({
@@ -49,44 +48,44 @@ const OrderIndex = () => {
     const fetchOrders = async () => {
       try {
         const response = await fetchAllOrdersAPI();
-      console.log("API response:", response); // Kiểm tra dữ liệu trả về từ API
+        console.log("API response:", response);
 
-      if (!response || !Array.isArray(response)) {
-        console.error("Dữ liệu API không hợp lệ:", response);
+        if (!response || !Array.isArray(response)) {
+          console.error("Dữ liệu API không hợp lệ:", response);
+          setOrders([]);
+          return;
+        }
+        const formattedOrders = response.map((order) => {
+          console.log("Processing order:", order);
+          return {
+            invoiceNo: order.id?.toString() || "N/A",
+            orderTime: order.date || "Không có ngày",
+            customerName: order.customerName || "Không xác định",
+            method: order.payment || "Không rõ",
+            address: order.address || "Không có địa chỉ",
+            phone: order.phone || "Không có số điện thoại",
+            note: order.note || "Không có ghi chú",
+            amount: `${order.total ? order.total.toLocaleString("vi-VN", {
+              style: "currency",
+              currency: "VND",
+            }) : "0 VND"}`,
+            paymentStatus: order.paymentStatus || "Không rõ",
+            status: order.shippingStatus || "Không rõ",
+            vnpTxnRef: order.vnpTxnRef || "N/A",
+          };
+        });
+
+        console.log("Formatted orders:", formattedOrders);
+        setOrders(formattedOrders);
+        setFilteredOrders(formattedOrders);
+      } catch (error) {
+        console.error("Failed to fetch orders:", error);
         setOrders([]);
-        return;
       }
-      const formattedOrders = response.map((order) => {
-        console.log("Processing order:", order); // Kiểm tra từng đối tượng order
-        return {
-          invoiceNo: order.id?.toString() || "N/A",
-          orderTime: order.date || "Không có ngày",
-          customerName: order.customerName || "Không xác định",
-          method: order.payment || "Không rõ",
-          address: order.address || "Không có địa chỉ",
-          phone: order.phone || "Không có số điện thoại",
-          note: order.note || "Không có ghi chú",
-          amount: `${order.total ? order.total.toLocaleString("vi-VN", {
-            style: "currency",
-            currency: "VND",
-          }) : "0 VND"}`,
-          paymentStatus: order.paymentStatus || "Không rõ",
-          status: order.shippingStatus || "Không rõ",
-          vnpTxnRef: order.vnpTxnRef || "N/A",
-        };
-      });
+    };
 
-        console.log("Formatted orders:", formattedOrders); // Kiểm tra kết quả sau khi định dạng
-      setOrders(formattedOrders);
-      setFilteredOrders(formattedOrders); // Đặt filteredOrders ban đầu
-    } catch (error) {
-      console.error("Failed to fetch orders:", error);
-      setOrders([]);
-    }
-  };
-
-  fetchOrders();
-}, []);
+    fetchOrders();
+  }, []);
 
   const handleFilterChange = (e) => {
     const { name, value } = e.target;
@@ -96,6 +95,7 @@ const OrderIndex = () => {
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
+
   const handleViewDetail = (order) => {
     setSelectedOrderId(order.invoiceNo);
   };
@@ -103,6 +103,7 @@ const OrderIndex = () => {
   const handleCloseDetail = () => {
     setSelectedOrderId(null);
   };
+
   useEffect(() => {
     applyFilters();
   }, [filters, searchTerm]);
@@ -159,10 +160,9 @@ const OrderIndex = () => {
       endDate: "",
     });
     setSearchTerm("");
-    setFilteredOrders(orders); // Reset filteredOrders to show all orders
+    setFilteredOrders(orders);
   };
 
- 
   const handleDeleteOrder = (order) => {
     setOrderToDelete(order);
     setOpenConfirmDialog(true);
@@ -205,48 +205,42 @@ const OrderIndex = () => {
 
   const handleStatusChange = async (invoiceNo, newStatus) => {
     try {
-      // Tìm đơn hàng cần cập nhật
       const orderToUpdate = orders.find((order) => order.invoiceNo === invoiceNo);
       if (!orderToUpdate) {
         throw new Error(`Không tìm thấy đơn hàng với mã ${invoiceNo}.`);
       }
-  
-      // Chuyển đổi ngày tháng sang định dạng ISO đầy đủ
+
       const orderTimeISO = new Date(orderToUpdate.orderTime).toISOString();
-  
-      // Chuẩn bị dữ liệu cập nhật
+
       const updateData = {
         customerName: orderToUpdate.customerName || "Không xác định",
-        date: orderTimeISO, // Bao gồm cả ngày và giờ
+        date: orderTimeISO,
         address: orderToUpdate.address || "Không có địa chỉ",
         total: parseInt(orderToUpdate.amount.replace(/\D/g, ""), 10) || 0,
         payment: orderToUpdate.method || "Không rõ",
         paymentStatus: orderToUpdate.paymentStatus || "Không rõ",
-        shippingStatus: newStatus, // Giá trị mới
+        shippingStatus: newStatus,
         vnpTxnRef: orderToUpdate.vnpTxnRef || "N/A",
       };
-  
-      // Gửi API cập nhật trạng thái
+
       await updateOrderAPI(invoiceNo, updateData);
-  
-      // Cập nhật trạng thái trong state `orders` và `filteredOrders`
+
       setOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.invoiceNo === invoiceNo
-            ? { ...order, status: newStatus } // Cập nhật chỉ trường trạng thái
+            ? { ...order, status: newStatus }
             : order
         )
       );
-  
+
       setFilteredOrders((prevOrders) =>
         prevOrders.map((order) =>
           order.invoiceNo === invoiceNo
-            ? { ...order, status: newStatus } // Cập nhật chỉ trường trạng thái
+            ? { ...order, status: newStatus }
             : order
         )
       );
-  
-      // Hiển thị thông báo thành công
+
       setSnackbar({
         open: true,
         message: "Cập nhật trạng thái đơn hàng thành công!",
@@ -254,8 +248,6 @@ const OrderIndex = () => {
       });
     } catch (error) {
       console.error("Không thể cập nhật trạng thái đơn hàng", error);
-  
-      // Hiển thị thông báo lỗi
       setSnackbar({
         open: true,
         message: "Cập nhật trạng thái đơn hàng thất bại!",
@@ -263,8 +255,7 @@ const OrderIndex = () => {
       });
     }
   };
-  
-  
+
   return (
     <Dashboard>
       <OrderManager>
@@ -273,7 +264,6 @@ const OrderIndex = () => {
             Quản lý hóa đơn
           </Typography>
           <button style={{ color: 'black' }}>Xuất đơn hàng</button>
-
         </Header>
         <FilterSection>
           <TextField
@@ -299,7 +289,8 @@ const OrderIndex = () => {
             onChange={handleFilterChange}
           >
             <option value="">Phương thức</option>
-            <option value="Chuyển khoản VNPay">Chuyển khoản</option>
+            <option value="Chuyển khoản VNPay">Chuyển khoản VNPay</option>
+            <option value="Ví MoMo">Ví MoMo</option>   
             <option value="Thanh toán khi nhận hàng">Tiền mặt</option>
           </select>
           <input
@@ -314,59 +305,60 @@ const OrderIndex = () => {
             value={filters.endDate}
             onChange={handleFilterChange}
           />
-          <button onClick={applyFilters} style={{ background: "#4caf50",color: 'black' }}>
+          <button onClick={applyFilters} style={{ background: "#FFC1C1", color: 'black' }}>
             Lọc
           </button>
           <button style={{ whiteSpace: "nowrap" }} onClick={resetFilters}>
             Đặt lại
           </button>
         </FilterSection>
-        <OrderTable>
-        <TableHead>
-            <TableRow>
-              <TableCell>Mã </TableCell>
-              <TableCell>Thời gian đặt hàng</TableCell>
-              <TableCell>Tên khách hàng</TableCell>
-              <TableCell>PHƯƠNG THỨC</TableCell>
-              <TableCell>Số tiền</TableCell>
-              <TableCell>Thanh Toán</TableCell>
-              <TableCell>Vận chuyển</TableCell>
-              <TableCell>Tác vụ</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {filteredOrders.map((order) => (
-              <TableRow key={order.invoiceNo}>
-                <TableCell>{order.invoiceNo}</TableCell>
-                <TableCell>{order.orderTime}</TableCell>
-                <TableCell>{order.customerName}</TableCell>
-                <TableCell>{order.method}</TableCell>
-                <TableCell>{order.amount}</TableCell>
-                <TableCell className={`status ${order.paymentStatus.toLowerCase()}`}>{order.paymentStatus}</TableCell>
-                <TableCell>
-  <select 
-    value={order.status} 
-    onChange={(e) => handleStatusChange(order.invoiceNo, e.target.value)}
-  >
-    <option value="Đang vận chuyển">Đang vận chuyển</option>
-    <option value="Đang xử lý">Đang xử lý</option>
-    <option value="Hủy bỏ">Hủy bỏ</option>
-    <option value="Đã giao hàng">Đã giao hàng</option>
-  </select>
-</TableCell>
-
-                <TableCell>
-                  <IconButton onClick={() => handleViewDetail(order)}>
-                    <VisibilityOutlinedIcon />
-                  </IconButton>
-                  <IconButton onClick={() => handleDeleteOrder(order)}>
-                    <DeleteOutlineOutlinedIcon color="error" />
-                  </IconButton>
-                </TableCell>
+        <StyledTableContainer component={Paper}>
+          <StyledTable>
+            <TableHead>
+              <TableRow>
+                <StyledTableCell>Mã</StyledTableCell>
+                <StyledTableCell>Thời gian đặt hàng</StyledTableCell>
+                <StyledTableCell>Tên khách hàng</StyledTableCell>
+                <StyledTableCell>PHƯƠNG THỨC</StyledTableCell>
+                <StyledTableCell>Số tiền</StyledTableCell>
+                <StyledTableCell>Thanh Toán</StyledTableCell>
+                <StyledTableCell>Vận chuyển</StyledTableCell>
+                <StyledTableCell>Tác vụ</StyledTableCell>
               </TableRow>
-            ))}
-          </TableBody>
-        </OrderTable>
+            </TableHead>
+            <TableBody>
+              {filteredOrders.map((order) => (
+                <StyledTableRow key={order.invoiceNo}>
+                  <TableCell>{order.invoiceNo}</TableCell>
+                  <TableCell>{order.orderTime}</TableCell>
+                  <TableCell>{order.customerName}</TableCell>
+                  <TableCell>{order.method}</TableCell>
+                  <TableCell>{order.amount}</TableCell>
+                  <TableCell className={`status ${order.paymentStatus.toLowerCase()}`}>{order.paymentStatus}</TableCell>
+                  <TableCell>
+                    <select
+                      value={order.status}
+                      onChange={(e) => handleStatusChange(order.invoiceNo, e.target.value)}
+                    >
+                      <option value="Đang vận chuyển">Đang vận chuyển</option>
+                      <option value="Đang xử lý">Đang xử lý</option>
+                      <option value="Hủy bỏ">Hủy bỏ</option>
+                      <option value="Đã giao hàng">Đã giao hàng</option>
+                    </select>
+                  </TableCell>
+                  <TableCell>
+                    <IconButton onClick={() => handleViewDetail(order)}>
+                      <VisibilityOutlinedIcon />
+                    </IconButton>
+                    <IconButton onClick={() => handleDeleteOrder(order)}>
+                      <DeleteOutlineOutlinedIcon color="error" />
+                    </IconButton>
+                  </TableCell>
+                </StyledTableRow>
+              ))}
+            </TableBody>
+          </StyledTable>
+        </StyledTableContainer>
         {selectedOrderId && (
           <OrderDetail orderId={selectedOrderId} onClose={handleCloseDetail} />
         )}
@@ -409,8 +401,6 @@ const OrderIndex = () => {
 
 export default OrderIndex;
 
-
-
 const OrderManager = styled.div`
   padding: 20px;
   background: white;
@@ -432,7 +422,7 @@ const Header = styled.div`
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
-    background-color: #28a745;
+    background-color: #FFC1C1;
     color: white;
     cursor: pointer;
     font-size: 16px;
@@ -460,7 +450,7 @@ const FilterSection = styled.div`
     padding: 10px 20px;
     border: none;
     border-radius: 4px;
-    background-color: #28a745;
+    background-color: #FFC1C1;
     color: white;
     cursor: pointer;
   }
@@ -478,22 +468,44 @@ const FilterSection = styled.div`
   }
 `;
 
-const OrderTable = styled.table`
+const StyledTableContainer = styled(TableContainer)`
+  margin-top: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+`;
+
+const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   th,
   td {
-    padding: 12px;
-    border: 1px solid #ccc;
+    padding: 16px;
+    border: 1px solid #FFC1C1;
     text-align: center;
   }
 
   th {
-    background-color: #f8f9fa;
+    background-color: #FFC1C1;
+    font-weight: bold;
+    color: #333;
   }
 
-  
+  td {
+    color: #555;
+  }
+
+  tr:hover {
+    background-color: #f9f9f9;
+  }
+
+  &:last-child {
+    td {
+      border-bottom: none;
+    }
+  }
+
   .status.pending {
     color: #ffc107;
   }
@@ -507,13 +519,35 @@ const OrderTable = styled.table`
   }
 
   .status.delivered {
-    color: #28a745;
+    color: #FFC1C1;
   }
 
   select {
     padding: 6px;
     border: 1px solid #ccc;
     border-radius: 4px;
+  }
+`;
+
+const StyledTableCell = styled(TableCell)`
+  && {
+    border: 1px solid #FFC1C1;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+  }
+`;
+
+const StyledTableRow = styled(TableRow)`
+  &:not(:first-child) {
+    &:hover {
+      background-color: #f1f1f1;
+      cursor: pointer;
+    }
+  }
+
+  &:nth-of-type(even) {
+    background-color: #f9f9f9;
   }
 `;
 

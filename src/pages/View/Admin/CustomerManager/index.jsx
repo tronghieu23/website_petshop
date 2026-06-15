@@ -22,7 +22,7 @@ import {
   Grid, 
   CircularProgress,
 } from '@mui/material';
-import { Edit, Delete, Visibility, FilterList, GetApp } from "@mui/icons-material";
+import { FilterList, GetApp } from "@mui/icons-material";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';  
 import Dashboard from '../index';
@@ -50,10 +50,10 @@ const CustomerIndex = () => {
       .then((data) => {
         const mappedCustomers = data.map((user) => ({
           id: user.id,
-          joiningDate: user.createdAt.substring(0, 10), // Assuming createdAt is in ISO format
+          joiningDate: user.createdAt.substring(0, 10),
           name: user.username,
           email: user.email,
-          address: '', // Placeholder for address data from API
+          address: '',
           role: user.role,
         }));
         setCustomers(mappedCustomers);
@@ -89,7 +89,7 @@ const CustomerIndex = () => {
     setCustomerToDelete(null);
     setSnackbar({
       open: true,
-      message: 'Customer deleted successfully!',
+      message: 'Khách hàng đã được xóa thành công!',
       severity: 'success',
     });
   };
@@ -114,7 +114,7 @@ const CustomerIndex = () => {
     setSelectedCustomer(null);
     setSnackbar({
       open: true,
-      message: 'Customer updated successfully!',
+      message: 'Khách hàng đã được cập nhật thành công!',
       severity: 'success',
     });
   };
@@ -128,8 +128,7 @@ const CustomerIndex = () => {
       customers.filter(
         (cust) =>
           cust.name.toLowerCase().includes(filter.toLowerCase()) ||
-          cust.email.toLowerCase().includes(filter.toLowerCase()) ||
-          cust.phone.includes(filter)
+          cust.email.toLowerCase().includes(filter.toLowerCase())
       )
     );
   };
@@ -142,7 +141,7 @@ const CustomerIndex = () => {
   return (
     <Dashboard>
       <CustomerManager>
-      <Typography variant="h6" style={{ marginBottom: 16 }}>
+        <Typography variant="h6" style={{ marginBottom: 16 }}>
           Quản lý khách hàng
         </Typography>
         <Grid container spacing={2} alignItems="center">
@@ -151,12 +150,14 @@ const CustomerIndex = () => {
               fullWidth
               label="Tìm kiếm tên"
               variant="outlined"
+              value={filter}
+              onChange={handleFilterChange}
             />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
               fullWidth
-               label="Lọc theo chức vụ"
+              label="Lọc theo chức vụ"
               variant="outlined"
             />
           </Grid>
@@ -165,6 +166,7 @@ const CustomerIndex = () => {
               variant="outlined"
               startIcon={<FilterList />}
               style={{ marginRight: 8 }}
+              onClick={handleReset}
             >
               Đặt lại
             </Button>
@@ -175,7 +177,6 @@ const CustomerIndex = () => {
             >
               Xuất
             </Button>
-            
           </Grid>
         </Grid>
         {loading ? (
@@ -183,7 +184,7 @@ const CustomerIndex = () => {
             <CircularProgress />
           </LoadingContainer>
         ) : (
-          <TableContainer component={Paper} sx={{marginTop:'20px'}} >
+          <StyledTableContainer component={Paper}>
             <StyledTable>
               <TableHead>
                 <TableRow>
@@ -197,12 +198,12 @@ const CustomerIndex = () => {
               </TableHead>
               <TableBody>
                 {filteredCustomers.map((customer) => (
-                  <TableRow key={customer.id}>
+                  <StyledTableRow key={customer.id}>
                     <TableCell>{customer.id}</TableCell>
                     <TableCell>{customer.name}</TableCell>
                     <TableCell>{customer.email}</TableCell>
                     <TableCell>{customer.joiningDate}</TableCell>
-                    <TableCell>{customer.role?.name}</TableCell>
+                    <TableCell>{customer.role?.name || 'N/A'}</TableCell>
                     <TableCell>
                       <IconButton onClick={() => handleEditClick(customer)}>
                         <EditCalendarOutlinedIcon color="secondary" />
@@ -210,13 +211,12 @@ const CustomerIndex = () => {
                       <IconButton onClick={() => handleDeleteClick(customer)}>
                         <DeleteOutlineOutlinedIcon color="error" />
                       </IconButton>
-                      
                     </TableCell>
-                  </TableRow>
+                  </StyledTableRow>
                 ))}
               </TableBody>
             </StyledTable>
-          </TableContainer>
+          </StyledTableContainer>
         )}
         <CustomerEdit
           open={open}
@@ -228,18 +228,18 @@ const CustomerIndex = () => {
           open={confirmDialogOpen}
           onClose={() => setConfirmDialogOpen(false)}
         >
-          <DialogTitle>Delete Customer</DialogTitle>
+          <DialogTitle>Xóa Khách Hàng</DialogTitle>
           <DialogContent>
             <DialogContentText>
-              Are you sure you want to delete this customer?
+              Bạn có chắc chắn muốn xóa khách hàng này không?
             </DialogContentText>
           </DialogContent>
           <DialogActions>
             <Button onClick={() => setConfirmDialogOpen(false)} color="primary">
-              Cancel
+              Hủy
             </Button>
             <Button onClick={handleConfirmDelete} color="error">
-              Delete
+              Xóa
             </Button>
           </DialogActions>
         </Dialog>
@@ -263,15 +263,55 @@ const CustomerIndex = () => {
 
 export default CustomerIndex;
 
-const StyledTable = styled(Table)`
-  && {
-    border-collapse: collapse;
+const CustomerManager = styled.div`
+  padding: 20px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+`;
+
+const StyledTableContainer = styled(TableContainer)`
+  margin-top: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+`;
+
+const StyledTable = styled.table`
+  width: 100%;
+  border-collapse: collapse;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  th,
+  td {
+    padding: 16px;
+    border: 1px solid #FFC1C1;
+    text-align: center;
+  }
+
+  th {
+    background-color: #FFC1C1;
+    font-weight: bold;
+    color: #333;
+  }
+
+  td {
+    color: #555;
+  }
+
+  tr:hover {
+    background-color: #f9f9f9;
+  }
+
+  &:last-child {
+    td {
+      border-bottom: none;
+    }
   }
 `;
 
 const StyledTableCell = styled(TableCell)`
   && {
-    border: 1px solid #ddd;
+    border: 1px solid #FFC1C1;
     padding: 8px;
     text-align: center;
     vertical-align: middle;
@@ -279,34 +319,17 @@ const StyledTableCell = styled(TableCell)`
 `;
 
 const StyledTableRow = styled(TableRow)`
-  &&:nth-of-type(even) {
+  &:not(:first-child) {
+    &:hover {
+      background-color: #f1f1f1;
+      cursor: pointer;
+    }
+  }
+
+  &:nth-of-type(even) {
     background-color: #f9f9f9;
   }
-  &:hover {
-    background-color: #f1f1f1;
-  }
 `;
-
-const CustomerManager = styled.div`
-  padding: 20px;
-  background: white;
-  border-radius: 8px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
-   width: 100%;
-  border-collapse: collapse;
-
-  th,
-  td {
-    padding: 12px;
-    border: 1px solid #ccc;
-    text-align: center;
-  }
-
-  th {
-    background-color: #f8f9fa;
-  }
-`;
-
 
 const LoadingContainer = styled.div`
   display: flex;

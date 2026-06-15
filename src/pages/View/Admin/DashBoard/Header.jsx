@@ -36,7 +36,7 @@ const Header = () => {
                 <Box
                   width={20}
                   height={5}
-                  bgcolor="green"
+                  bgcolor="#FFC1C1"
                   borderRadius={2}
                   mr={1}
                 ></Box>

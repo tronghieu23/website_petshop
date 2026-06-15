@@ -277,7 +277,7 @@ const ShoppingCart = () => {
                   key={voucher.code}
                   variant="outlined"
                   onClick={() => handleOpenVoucherDialog()}
-                  style={{ margin: 4, border: '2px dashed #008b4b', fontSize: '0.8rem' }}
+                  style={{ margin: 4, border: '2px dashed #FFC1C1', fontSize: '0.8rem' }}
                 >
                   {voucher.code}
                 </Button>

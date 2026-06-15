@@ -5,6 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
 import InputBase from '@mui/material/InputBase';
 import { alpha, styled } from '@mui/material/styles';
+import { Box } from '@mui/material';
 import Button from '@mui/material/Button';
 import Badge from '@mui/material/Badge';
 import SearchIcon from '@mui/icons-material/Search';
@@ -15,15 +16,14 @@ import Profiles from './Menus/Profiles';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
 import { fetchCartItemsAPI, fetchSearchSuggestionsAPI } from '../../apis';
 import { useNavigate } from 'react-router-dom';
-
 const Search = styled('div')(({ theme }) => ({
   position: 'relative',
   borderRadius: theme.shape.borderRadius,
   backgroundColor: '#fff', // Màu nền trắng
-  border: '2px solid #4caf50', // Viền màu xanh lá
+  border: '2px solid #FFC1C1', // Viền màu xanh lá
   boxShadow: '0px 4px 8px rgba(0, 0, 0, 0.1)', // Hiệu ứng đổ bóng
   '&:hover': {
-    backgroundColor: alpha('#4caf50', 0.1), // Màu nền khi hover
+    backgroundColor: alpha('#FFC1C1', 0.1), // Màu nền khi hover
   },
   marginRight: theme.spacing(2),
   marginLeft: 0,
@@ -42,7 +42,7 @@ const SearchIconWrapper = styled('div')(({ theme }) => ({
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  color: '#4caf50', // Màu biểu tượng tìm kiếm
+  color: '#FFC1C1', // Màu biểu tượng tìm kiếm
 }));
 
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
@@ -168,9 +168,9 @@ useEffect(() => {
         <Toolbar>
           <a href="/" style={{ textDecoration: 'none' }}>
             <LogoImage
-              src="https://nongsanantam.com/wp-content/uploads/2023/12/nongsanantam.com_.png"
+              img src="https://res.cloudinary.com/dvvshh1iv/image/upload/v1743273927/logoweb_tu4udj.png"
               alt="Logo"
-              style={{ width: '180px', height: 'auto' }}
+              style={{ width: '100px', height: '50px', objectFit: 'cover', maxHeight: '80px' }}
             />
           </a>
           <Search className="search-container" sx={{ backgroundColor: 'white', position: 'relative' }}>
@@ -196,11 +196,11 @@ useEffect(() => {
       right: 0, 
       background: '#fff', 
       zIndex: 1000, 
-      border: '2px solid #4caf50', // Viền màu xanh lá
-      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', // Hiệu ứng đổ bóng
+      border: '2px solid #FFC1C1', 
+      boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)', 
       maxHeight: '250px',
       overflowY: 'auto',
-      borderRadius: '8px', // Góc bo tròn
+      borderRadius: '8px', 
     }}
   >
     {suggestions.map((suggestion, index) => (
@@ -216,7 +216,7 @@ useEffect(() => {
         }} 
         onClick={() => handleSuggestionClick(suggestion)}
         onMouseEnter={(e) => {
-          e.target.style.backgroundColor = '#4caf50'; // Màu nền khi hover
+          e.target.style.backgroundColor = '#FFC1C1'; // Màu nền khi hover
           e.target.style.color = '#fff'; // Màu chữ khi hover
         }}
         onMouseLeave={(e) => {
@@ -231,114 +231,119 @@ useEffect(() => {
   )}
 </Search>
 
-          <Button
-            variant="contained"
-            sx={{
-              backgroundColor: '#4caf50', // Màu xanh lá
-              color: '#FDF5E6', // Màu chữ
-              '&:hover': {
-                backgroundColor: '#388e3c', // Màu đậm hơn khi hover
-              },
-              ml: -1,
-              padding: '5px 5px',
-              fontSize: '0.705rem',
-              minWidth: 'auto',
-            }}
-            onClick={handleSearch}
-          >
-            Tìm kiếm
-          </Button>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '2px', flexWrap: 'nowrap' }}>
-            <Button
-              color="inherit"
-              href="/"
-              sx={{ml:3,
-                padding: '4px 8px',
-                fontSize: '0.89rem', 
-                minWidth: 'auto',
-                textAlign: 'center'
-              }}
-            >
-              Trang chủ
-            </Button>
-            <Button
-              color="inherit"
-              href="/Introduce"
-              sx={{
-                padding: '4px 8px',
-                fontSize: '0.89rem', 
-                minWidth: 'auto',
-                textAlign: 'center'
-              }}
-            >
-              Giới thiệu
-            </Button>
-            <Button
-              color="inherit"
-              href="/Customer/Product"
-              sx={{
-                padding: '4px 8px',
-                fontSize: '0.89rem', 
-                minWidth: 'auto',
-                textAlign: 'center'
-              }}
-            >
-              Sản phẩm
-            </Button>
-            <Button
-              color="inherit"
-              href="/News"
-              sx={{
-                padding: '4px 8px',
-                fontSize: '0.89rem', 
-                minWidth: 'auto',
-                textAlign: 'center'
-              }}
-            >
-              Tin tức
-            </Button>
-            <Button
-              color="inherit"
-              href="/ContactPage"
-              sx={{
-                padding: '4px 8px',
-                fontSize: '0.86rem', 
-                minWidth: 'auto',
-                textAlign: 'center'
-              }}
-            >
-              Liên hệ
-            </Button>
-          </div>
+<Button
+  variant="contained"
+  sx={{
+    backgroundColor: "#FFC1C1",
+    color: "#FDF5E6",
+    "&:hover": {
+      backgroundColor: "#FF6A6A",
+    },
+    ml: -1,
+    padding: "5px 5px",
+    fontSize: "0.705rem",
+    minWidth: "auto",
+  }}
+  onClick={handleSearch}
+>
+  Tìm kiếm
+</Button>
 
-          
-          <IconButton color="inherit">
-            <Badge badgeContent={0} color="success">
-              <FavoriteBorderOutlinedIcon />
-            </Badge>
-          </IconButton>
-          <IconButton color="inherit" href='/customer/ShoppingCart'>
-            <Badge badgeContent={cartItems.length} color="success">
-              <ShoppingBagOutlinedIcon />
-            </Badge>
-          </IconButton>
-          <IconButton
-            color="inherit"
-            aria-controls="menu-appbar"
-            aria-haspopup="true"
-            onClick={handleMenu}
-          >
-            <Badge badgeContent={0} color="success">
-              <NotificationsNoneIcon />
-            </Badge>
-          </IconButton>
-          {isAuthenticated ? (
-            <Profiles />
-          ) : (
-            <IconButton color="inherit" href='/account/login'>
-              <AccountCircleOutlinedIcon />
-            </IconButton>
-          )}
+<div style={{ display: "flex", alignItems: "center", gap: "2px", flexWrap: "nowrap" }}>
+  <Button
+    color="inherit"
+    href="/"
+    sx={{
+      ml: 3,
+      padding: "4px 8px",
+      fontSize: "0.89rem",
+      minWidth: "auto",
+      textAlign: "center",
+    }}
+  >
+    Trang chủ
+  </Button>
+  <Button
+    color="inherit"
+    href="/Introduce"
+    sx={{
+      padding: "4px 8px",
+      fontSize: "0.89rem",
+      minWidth: "auto",
+      textAlign: "center",
+    }}
+  >
+    Giới thiệu
+  </Button>
+  <Button
+    color="inherit"
+    href="/Customer/Product"
+    sx={{
+      padding: "4px 8px",
+      fontSize: "0.89rem",
+      minWidth: "auto",
+      textAlign: "center",
+    }}
+  >
+    Sản phẩm
+  </Button>
+  <Button
+    color="inherit"
+    href="/News"
+    sx={{
+      padding: "4px 8px",
+      fontSize: "0.89rem",
+      minWidth: "auto",
+      textAlign: "center",
+    }}
+  >
+    Tin tức
+  </Button>
+  <Button
+    color="inherit"
+    href="/ContactPage"
+    sx={{
+      padding: "4px 8px",
+      fontSize: "0.86rem",
+      minWidth: "auto",
+      textAlign: "center",
+    }}
+  >
+    Liên hệ
+  </Button>
+</div>
+
+{/* Căn chỉnh khoảng cách giữa các IconButton */}
+<Box display="flex" alignItems="center" gap={2} ml={2}>
+  <IconButton color="inherit">
+    <Badge badgeContent={0} color="success">
+      <FavoriteBorderOutlinedIcon />
+    </Badge>
+  </IconButton>
+  <IconButton color="inherit" href="/customer/ShoppingCart">
+    <Badge badgeContent={cartItems.length} color="success">
+      <ShoppingBagOutlinedIcon />
+    </Badge>
+  </IconButton>
+  <IconButton
+    color="inherit"
+    aria-controls="menu-appbar"
+    aria-haspopup="true"
+    onClick={handleMenu}
+  >
+    <Badge badgeContent={0} color="success">
+      <NotificationsNoneIcon />
+    </Badge>
+  </IconButton>
+  {isAuthenticated ? (
+    <Profiles />
+  ) : (
+    <IconButton color="inherit" href="/account/login">
+      <AccountCircleOutlinedIcon />
+    </IconButton>
+  )}
+</Box>
+
         </Toolbar>
       </AppBar>
     </>

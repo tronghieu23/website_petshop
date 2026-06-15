@@ -49,8 +49,8 @@ const pieData = {
   datasets: [
     {
       data: [68, 25, 7],
-      backgroundColor: ["#4CAF50", "#FF9800", "#2196F3"],
-      hoverBackgroundColor: ["#66BB6A", "#FFB74D", "#64B5F6"],
+      backgroundColor: ["#FFC1C1", "#FF9800", "#2196F3"],
+      hoverBackgroundColor: ["#FFC1C1", "#FFB74D", "#64B5F6"],
     },
   ],
 };
@@ -126,7 +126,7 @@ const DashboardContent = () => {
                 p: 2,
                 display: "flex",
                 flexDirection: "column",
-                backgroundColor: "#4CAF50",
+                backgroundColor: "#FFC1C1",
                 color: "#FFF",
               }}
             >

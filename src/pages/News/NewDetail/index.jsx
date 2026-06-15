@@ -144,7 +144,7 @@ const styles = {
     fontWeight: 'bold',
     marginBottom: '10px',
     padding: '10px',
-    backgroundColor: '#008b4b',
+    backgroundColor: '#FFC1C1',
     color: '#fff',
   },
   widgetList: {
@@ -185,7 +185,7 @@ const styles = {
     borderRadius: '20px',
     fontSize: '14px',
     cursor: 'pointer',
-    border: '1px solid #008b4b',
+    border: '1px solid #FFC1C1',
     color: '#2f3640',
   },
   searchBox: {
@@ -208,7 +208,7 @@ const styles = {
     fontSize: '14px',
     border: '1px solid #ddd',
     borderRadius: '0 4px 4px 0',
-    backgroundColor: 'green',
+    backgroundColor: '#FFC1C1',
     color: 'white',
     cursor: 'pointer',
     outline: 'none',

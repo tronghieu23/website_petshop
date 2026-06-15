@@ -10,7 +10,7 @@ import News from './pages/News/News'
 import NewDetail from './pages/News/NewDetail';
 import Product from './pages/View/Customer/Product';
 import ProductDetail from './pages/View/Customer/Product/ProductDetail';
-
+import VerifyAccount from './Components/Account/VerifyAccount/VerifyAccount';
 const AppRoutes = () => {
   const { isAuthenticated } = useAuth();
 
@@ -26,6 +26,7 @@ const AppRoutes = () => {
       <Route path="/Customer/ProductDetail/:id" element={<ProductDetail />} />
       <Route path="/account/login" element={isAuthenticated ? <Navigate to="/" /> : <Login />} />
       <Route path="/account/signup" element={isAuthenticated ? <Navigate to="/" /> : <SignUp />} />
+      <Route path="/account/Verify" element={<VerifyAccount />} />
       {/* Add other routes as necessary */}
     </Routes>
   );

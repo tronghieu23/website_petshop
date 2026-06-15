@@ -95,7 +95,7 @@ const CustomerEdit = ({ open, onClose, customer, onSave }) => {
           <Button
             variant="contained"
             style={{
-              backgroundColor: "#00b894",
+              backgroundColor: "#FFC1C1",
               color: "white",
               padding: "10px 20px",
             }}

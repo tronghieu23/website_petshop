@@ -109,16 +109,7 @@ const BlogPage = () => {
               ))}
             </ul>
           </div>
-          <div style={styles.widget}>
-            <h3 style={styles.widgetTitle}>TAGS</h3>
-            <div style={styles.tags}>
-              {tags.map((tag, index) => (
-                <span key={index} style={styles.tag}>
-                  {tag}
-                </span>
-              ))}
-            </div>
-          </div>
+          
         </div>
       </div>
       <ChatAI />
@@ -174,7 +165,7 @@ const styles = {
     color: '#555',
   },
   readMore: {
-    color: 'green',
+    color: 'FFC1C1',
     textDecoration: 'none',
   },
   sidebar: {
@@ -201,7 +192,7 @@ const styles = {
     fontSize: '14px',
     border: '1px solid #ddd',
     borderRadius: '0 4px 4px 0',
-    backgroundColor: 'green',
+    backgroundColor: 'FFC1C1',
     color: 'white',
     cursor: 'pointer',
     outline: 'none',
@@ -214,7 +205,7 @@ const styles = {
     marginLeft: '150px',
   },
   widgetTitle: {
-    backgroundColor: '#008b4b',
+    backgroundColor: '#FFC1C1',
     margin: '0 0 10px 0',
     fontSize: '16px',
     fontWeight: 'bold',
@@ -252,7 +243,7 @@ const styles = {
     borderRadius: '20px',
     fontSize: '14px',
     cursor: 'pointer',
-    border: ' 1px solid #008b4b',
+    border: ' 1px solid #FFC1C1',
     color: '#2f3640',
   },
 };

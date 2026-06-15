@@ -68,7 +68,7 @@ const AboutLabel = () => {
 
   const cardIconStyle = {
     fontSize: '40px',
-    color: '#3e8e41',
+    color: '#FFC1C1',
     marginBottom: '20px'
   };
 
@@ -78,19 +78,19 @@ const AboutLabel = () => {
       <div style={cardContainerStyle}>
         <div style={cardStyle}>
           {/* <div style={cardIconStyle}>🏪</div> */}
-          <img src="https://bizweb.dktcdn.net/100/514/629/themes/951567/assets/dichvu_1.png?1716945232631" alt="Chất lượng và tươi xanh" style={icon} />
+          <img src="https://res.cloudinary.com/dvvshh1iv/image/upload/v1743272442/distribution_gxhh25.png" alt="Chất lượng và an toàn" style={icon} />
           <h3 style={cardHeadingStyle}>PHÂN PHỐI</h3>
-          <p style={cardParagraphStyle}>Organic Food luôn hướng đến xây dựng chuỗi cung ứng nông sản hàng đầu tại Việt Nam.</p>
+          <p style={cardParagraphStyle}>**PetShop Food** luôn hướng đến xây dựng chuỗi cung ứng thực phẩm và sản phẩm chăm sóc thú cưng hàng đầu tại Việt Nam.</p>
         </div>
         <div style={cardStyle}>
-        <img src="https://bizweb.dktcdn.net/100/514/629/themes/951567/assets/dichvu_2.png?1716945232631" alt="Chất lượng và tươi xanh" style={icon} />
+        <img src="https://res.cloudinary.com/dvvshh1iv/image/upload/v1743272680/petfoodicon_h5mnyg.png" alt="Chất lượng và an toàn" style={icon} />
           <h3 style={cardHeadingStyle}>SẢN PHẨM</h3>
-          <p style={cardParagraphStyle}>Organic Food luôn tìm kiếm và nhập sản phẩm hữu cơ chất lượng từ thị trường Châu Âu, Mỹ.</p>
+          <p style={cardParagraphStyle}>**PetShop Food** luôn tìm kiếm và nhập khẩu các sản phẩm thức ăn và đồ dùng cho thú cưng chất lượng từ thị trường Châu Âu, Mỹ.</p>
         </div>
         <div style={cardStyle}>
-        <img src="https://bizweb.dktcdn.net/100/514/629/themes/951567/assets/dichvu_3.png?1716945232631" alt="Chất lượng và tươi xanh" style={icon} />
+        <img src="https://res.cloudinary.com/dvvshh1iv/image/upload/v1743273213/qualityicon_ms20px.png" alt="Chất lượng và an toàn" style={{ ...icon, width: "65px", height: "65px" }} />
           <h3 style={cardHeadingStyle}>CHẤT LƯỢNG</h3>
-          <p style={cardParagraphStyle}>Chỉ phân phối nông sản được chứng nhận uy tín: Demeter, EU Organic, USDA, AIAB, Vegan</p>
+          <p style={cardParagraphStyle}>Chỉ phân phối các sản phẩm thức ăn và đồ dùng cho thú cưng được chứng nhận uy tín: USDA Organic, EU Organic, AAFCO, FEDIAF, và Vegan.</p>
         </div>
       </div>
     </div>

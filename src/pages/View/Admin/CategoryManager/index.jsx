@@ -41,21 +41,40 @@ const CategoryManager = styled.div`
 `;
 const StyledTableContainer = styled(TableContainer)`
   margin-top: 16px;
+  border-radius: 8px;
+  overflow: hidden; // Để có góc bo tròn
 `;
 
 const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   th,
   td {
-    padding: 12px;
-    border: 1px solid #ccc;
-    text-align: center;
+    padding: 16px;
+    border: 1px solid #FFC1C1; // Thay đổi màu viền
+    text-align: center; // Căn trái cho đẹp hơn
   }
 
   th {
-    background-color: #f8f9fa;
+    background-color: #FFC1C1; // Màu nền cho tiêu đề
+    font-weight: bold; // Đậm hơn
+    color: #333; // Màu chữ tiêu đề
+  }
+
+  td {
+    color: #555; // Màu chữ cho ô
+  }
+
+  tr:hover {
+    background-color: #f9f9f9; // Màu nền khi hover
+  }
+
+  &:last-child {
+    td {
+      border-bottom: none; // Gỡ bỏ viền dưới cho hàng cuối
+    }
   }
 `;
 
@@ -89,6 +108,7 @@ const CategoryIndex = () => {
   const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [deleteCategoryId, setDeleteCategoryId] = useState(null);
   const [openEditDialog, setOpenEditDialog] = useState(false);
+  
   const [snackbar, setSnackbar] = useState({
     open: false,
     message: "",
@@ -111,23 +131,27 @@ const CategoryIndex = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    const newCategory = {
-      id: String(categories.length + 1),
-      name,
-      description,
-    };
-    // For demo purposes, add the new category locally
-    setCategories([...categories, newCategory]);
-    setName("");
-    setDescription("");
-    setSnackbar({
-      open: true,
-      message: "Thêm danh mục thành công!",
-      severity: "success",
-    });
+    try {
+      const response = await createCategoryAPI({ name, description }); // Gọi API thêm
+      setCategories([...categories, response]);
+      setName("");
+      setDescription("");
+      setSnackbar({
+        open: true,
+        message: "Thêm danh mục thành công!",
+        severity: "success",
+      });
+    } catch (error) {
+      setSnackbar({
+        open: true,
+        message: "Thêm danh mục thất bại!",
+        severity: "error",
+      });
+    }
   };
+  
 
   const handleDeleteClick = (id) => {
     setDeleteCategoryId(id);
@@ -148,10 +172,13 @@ const CategoryIndex = () => {
         severity: "success",
       });
     } catch (error) {
+      console.log("❌ Error khi xoá:", error);
+      console.log("❌ message:", error.response?.data?.message);
+    
       setOpenDeleteDialog(false);
       setSnackbar({
         open: true,
-        message: error.response?.data,
+        message: error.response?.data?.message || "Đã xảy ra lỗi khi xoá danh mục",
         severity: "error",
       });
     }
@@ -242,7 +269,7 @@ const CategoryIndex = () => {
             </Button>
             <Button
               variant="contained"
-              style={{ backgroundColor: "#4caf50" }}
+              style={{ backgroundColor: "#FFC1C1" }}
               component={Link}
               to="/admin/categorymanager/create"
             >
@@ -252,36 +279,36 @@ const CategoryIndex = () => {
         </Grid>
 
         <StyledTableContainer component={Paper}>
-          <StyledTable>
-            <TableHead>
-              <StyledTableRow>
-                <StyledTableCell>ID</StyledTableCell>
-                <StyledTableCell>Tên loại sản phẩm</StyledTableCell>
-                <StyledTableCell>Ghi chú</StyledTableCell>
-                <StyledTableCell>Tác vụ</StyledTableCell>
-              </StyledTableRow>
-            </TableHead>
-            <TableBody>
-              {filteredCategories.map((category) => (
-                <TableRow key={category.id}>
-                  <TableCell>{category.id}</TableCell>
-                  <TableCell>{category.name}</TableCell>
-                  <TableCell>{category.description}</TableCell>
-                  <TableCell>
-                    <MuiIconButton onClick={() => handleEdit(category)}>
-                      <EditCalendarOutlinedIcon color="secondary" />
-                    </MuiIconButton>
-                    <MuiIconButton
-                      onClick={() => handleDeleteClick(category.id)}
-                    >
-                      <DeleteOutlineOutlinedIcon color="error" />
-                    </MuiIconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-            </TableBody>
-          </StyledTable>
-        </StyledTableContainer>
+  <StyledTable>
+    <TableHead>
+      <StyledTableRow>
+        <StyledTableCell>ID</StyledTableCell>
+        <StyledTableCell>Tên loại sản phẩm</StyledTableCell>
+        <StyledTableCell>Ghi chú</StyledTableCell>
+        <StyledTableCell>Tác vụ</StyledTableCell>
+      </StyledTableRow>
+    </TableHead>
+    <TableBody>
+      {filteredCategories.map((category) => (
+        <StyledTableRow key={category.id}>
+          <TableCell>{category.id}</TableCell>
+          <TableCell>{category.name}</TableCell>
+          <TableCell>{category.description}</TableCell>
+          <TableCell>
+            <MuiIconButton onClick={() => handleEdit(category)}>
+              <EditCalendarOutlinedIcon color="secondary" />
+            </MuiIconButton>
+            <MuiIconButton
+              onClick={() => handleDeleteClick(category.id)}
+            >
+              <DeleteOutlineOutlinedIcon color="error" />
+            </MuiIconButton>
+          </TableCell>
+        </StyledTableRow>
+      ))}
+    </TableBody>
+  </StyledTable>
+</StyledTableContainer>
       </CategoryManager>
 
       {/* Edit Category Dialog */}

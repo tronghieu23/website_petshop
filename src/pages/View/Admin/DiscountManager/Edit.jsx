@@ -27,7 +27,7 @@ import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
 import Dashboard from "../index";
 import ProductEdit from "../ProductManager/Edit";
 import styled from "styled-components";
-import { fetchManagerAdminProductsAPI, deleteProductAPI } from '../../../../apis'; // Import deleteProductAPI
+import { fetchManagerAdminProductsAPI, deleteProductAPI } from '../../../../apis';
 
 const index = () => {
   const [projects, setProjects] = useState([]);
@@ -107,7 +107,7 @@ const index = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      await deleteProductAPI(projectToDelete.id); // Assuming deleteProductAPI takes product ID as argument
+      await deleteProductAPI(projectToDelete.id);
       setProjects((prevProjects) =>
         prevProjects.filter((project) => project.id !== projectToDelete.id)
       );
@@ -144,18 +144,13 @@ const index = () => {
   const filteredProjects = projects.filter((project) => {
     const matchesSearch = project.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesPrice = filterPrice === "" || project.price.toString().includes(filterPrice);
-  
-    // Kiểm tra sản phẩm đã hết hạn (so sánh với ngày hiện tại)
     const isExpired = project.expirationDate ? new Date(project.expirationDate) < new Date() : false;
-    
     return (matchesSearch && matchesPrice) || isExpired;
   });
-  
-  
+
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
-
 
   return (
     <Dashboard>
@@ -164,7 +159,7 @@ const index = () => {
           Quản lý sản phẩm
         </Typography>
         <Grid container spacing={2} alignItems="center">
-          <Grid item xs={12} sm={6}>
+          <Grid item xeroxs={12} sm={6}>
             <TextField
               fullWidth
               label="Tìm kiếm..."
@@ -211,97 +206,95 @@ const index = () => {
             </Button>
           </Grid>
         </Grid>
-        <TableContainer component={Paper} style={{ marginTop: 16 }}>
-  <StyledTable>
-    <TableHead>
-      <StyledTableRow>
-        <StyledTableCell align="center">ID</StyledTableCell>
-        <StyledTableCell align="center">Hình ảnh</StyledTableCell>
-        <StyledTableCell align="center">Tên sản phẩm</StyledTableCell>
-        <StyledTableCell align="center">Chú thích</StyledTableCell>
-        <StyledTableCell align="center">Giá</StyledTableCell>
-        <StyledTableCell align="center">Trạng thái</StyledTableCell>
-        <StyledTableCell align="center">Tác vụ</StyledTableCell>
-      </StyledTableRow>
-    </TableHead>
-    <TableBody>
-      {filteredProjects.map((project) => {
-        const isExpired = project.expirationDate ? new Date(project.expirationDate) < new Date() : false;
+        <StyledTableContainer component={Paper}>
+          <StyledTable>
+            <TableHead>
+              <TableRow>
+                <StyledTableCell align="center">ID</StyledTableCell>
+                <StyledTableCell align="center">Hình ảnh</StyledTableCell>
+                <StyledTableCell align="center">Tên sản phẩm</StyledTableCell>
+                <StyledTableCell align="center">Chú thích</StyledTableCell>
+                <StyledTableCell align="center">Giá</StyledTableCell>
+                <StyledTableCell align="center">Trạng thái</StyledTableCell>
+                <StyledTableCell align="center">Tác vụ</StyledTableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {filteredProjects.map((project) => {
+                const isExpired = project.expirationDate ? new Date(project.expirationDate) < new Date() : false;
 
-        return (
-          <StyledTableRow key={project.id} expired={isExpired}>
-            <TableCell align="center">{project.id}</TableCell>
-            <TableCell align="center">
-              <img src={project.image} alt={project.name} style={{ width: 50, height: 50, objectFit: "cover" }} />
-            </TableCell>
-            <TableCell align="center">{project.name}</TableCell>
-            <TableCell align="center">{project.description}</TableCell>
-            <TableCell align="center">
-              {project.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
-            </TableCell>
-            <TableCell align="center">
-              {isExpired ? (
-                <Typography color="error">Hết hạn</Typography>
-              ) : (
-                <Typography color="primary">Còn hiệu lực</Typography>
-              )}
-            </TableCell>
-            <TableCell align="center">
-              <IconButton color="secondary" onClick={() => handleEditClick(project)}>
-                <EditCalendarOutlinedIcon />
-              </IconButton>
-              <IconButton color="error" onClick={() => handleDeleteClick(project)}>
-                <DeleteOutlineOutlinedIcon />
-              </IconButton>
-            </TableCell>
-          </StyledTableRow>
-        );
-      })}
-    </TableBody>
-  </StyledTable>
-</TableContainer>
-
+                return (
+                  <StyledTableRow key={project.id} expired={isExpired}>
+                    <TableCell align="center">{project.id}</TableCell>
+                    <TableCell align="center">
+                      <img src={project.image} alt={project.name} style={{ width: 50, height: 50, objectFit: "cover" }} />
+                    </TableCell>
+                    <TableCell align="center">{project.name}</TableCell>
+                    <TableCell align="center">{project.description}</TableCell>
+                    <TableCell align="center">
+                      {project.price.toLocaleString('vi-VN', { style: 'currency', currency: 'VND' })}
+                    </TableCell>
+                    <TableCell align="center">
+                      {isExpired ? (
+                        <Typography color="error">Hết hạn</Typography>
+                      ) : (
+                        <Typography color="primary">Còn hiệu lực</Typography>
+                      )}
+                    </TableCell>
+                    <TableCell align="center">
+                      <IconButton color="secondary" onClick={() => handleEditClick(project)}>
+                        <EditCalendarOutlinedIcon />
+                      </IconButton>
+                      <IconButton color="error" onClick={() => handleDeleteClick(project)}>
+                        <DeleteOutlineOutlinedIcon />
+                      </IconButton>
+                    </TableCell>
+                  </StyledTableRow>
+                );
+              })}
+            </TableBody>
+          </StyledTable>
+        </StyledTableContainer>
       </ProductManager>
 
-        <Dialog
-          open={confirmDialogOpen}
-          onClose={() => setConfirmDialogOpen(false)}
-        >
-          <DialogTitle>Xóa sản phẩm</DialogTitle>
-          <DialogContent>
-            <DialogContentText>
-              Bạn chắc chắn muốn xóa sản phẩm này?
-            </DialogContentText>
-          </DialogContent>
-          <DialogActions>
-            <Button onClick={handleCloseConfirmDialog} color="primary">
-              Hủy
-            </Button>
-            <Button onClick={handleConfirmDelete} color="error">
-              Xóa
-            </Button>
-          </DialogActions>
-        </Dialog>
-        <Snackbar
-          open={snackbar.open}
-          autoHideDuration={6000}
+      <Dialog
+        open={confirmDialogOpen}
+        onClose={() => setConfirmDialogOpen(false)}
+      >
+        <DialogTitle>Xóa sản phẩm</DialogTitle>
+        <DialogContent>
+          <DialogContentText>
+            Bạn chắc chắn muốn xóa sản phẩm này?
+          </DialogContentText>
+        </DialogContent>
+        <DialogActions>
+          <Button onClick={handleCloseConfirmDialog} color="primary">
+            Hủy
+          </Button>
+          <Button onClick={handleConfirmDelete} color="error">
+            Xóa
+          </Button>
+        </DialogActions>
+      </Dialog>
+      <Snackbar
+        open={snackbar.open}
+        autoHideDuration={6000}
+        onClose={() => setSnackbar({ ...snackbar, open: false })}
+      >
+        <Alert
           onClose={() => setSnackbar({ ...snackbar, open: false })}
+          severity={snackbar.severity}
+          variant="filled"
         >
-          <Alert
-            onClose={() => setSnackbar({ ...snackbar, open: false })}
-            severity={snackbar.severity}
-            variant="filled"
-          >
-            {snackbar.message}
-          </Alert>
-        </Snackbar>
-        <ProductEdit
-          open={open}
-          onClose={handleClose}
-          product={currentProject}
-          onSave={handleSave}
-        />
-        
+          {snackbar.message}
+        </Alert>
+      </Snackbar>
+      <ProductEdit
+        open={open}
+        onClose={handleClose}
+        product={currentProject}
+        onSave={handleSave}
+      />
     </Dashboard>
   );
 };
@@ -314,34 +307,69 @@ const ProductManager = styled.div`
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 `;
 
-const StyledTableCell = styled(TableCell)`
+const StyledTableContainer = styled(TableContainer)`
+  margin-top: 16px;
+  border-radius: 8px;
+  overflow: hidden;
 `;
+
 const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   th,
   td {
-    padding: 12px;
-    border: 1px solid #ccc;
+    padding: 16px;
+    border: 1px solid #FFC1C1;
     text-align: center;
   }
 
   th {
-    background-color: #f8f9fa;
+    background-color: #FFC1C1;
+    font-weight: bold;
+    color: #333;
+  }
+
+  td {
+    color: #555;
+  }
+
+  tr:hover {
+    background-color: #f9f9f9;
+  }
+
+  &:last-child {
+    td {
+      border-bottom: none;
+    }
+  }
+`;
+
+const StyledTableCell = styled(TableCell)`
+  && {
+    border: 1px solid #FFC1C1;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
   }
 `;
 
 const StyledTableRow = styled(TableRow)`
-  &:nth-of-type(odd) {
+  &:not(:first-child) {
+    &:hover {
+      background-color: #f1f1f1;
+      cursor: pointer;
+    }
+  }
+
+  &:nth-of-type(even) {
     background-color: #f9f9f9;
   }
 
-  /* Thay đổi màu nền cho sản phẩm hết hạn */
   ${({ expired }) => expired && `
-    background-color: #f8d7da; /* Màu đỏ nhạt cho sản phẩm hết hạn */
+    background-color: #f8d7da;
   `}
 `;
-
 
 export default index;

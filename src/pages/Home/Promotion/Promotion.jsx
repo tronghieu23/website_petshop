@@ -81,12 +81,12 @@ const Promotion = () => {
   return (
     <Box sx={{ p: 3, maxWidth: '100%' }}>
       {/* Tiêu đề và thời gian */}
-      <Box sx={{ marginBottom: '25px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#008b4b', padding: '15px' }}>
+      <Box sx={{ marginBottom: '25px', display: 'flex', justifyContent: 'space-between', alignItems: 'center', backgroundColor: '#EEB4B4', padding: '15px' }}>
         <Box>
-          <Typography variant="h5" component="div" sx={{ fontSize: '30px', fontWeight: 'bold', color: '#f8c144', mb: 1 }}>
-            Khuyến mãi đặc biệt <img width="32" height="32" src="//bizweb.dktcdn.net/100/514/629/themes/951567/assets/flash.png?1716945232631" alt="Khuyến mãi đặc biệt" />
+          <Typography variant="h5" component="div" sx={{ fontSize: '30px', fontWeight: 'bold', color: 'black', mb: 1 }}>
+            Khuyến mãi đặc biệt
           </Typography>
-          <Typography variant="body2" color="textSecondary" sx={{ fontSize: '16px', fontWeight: 'bold', color: '#ffff' }}>
+          <Typography variant="body2" color="textSecondary" sx={{ fontSize: '16px', fontWeight: 'bold', color: 'black' }}>
             Đừng bỏ lỡ cơ hội giảm giá đặc biệt!
           </Typography>
         </Box>
@@ -111,7 +111,7 @@ const Promotion = () => {
       </Box>
 
       {/* Hiển thị sản phẩm khuyến mãi */}
-      <Grid container spacing={3} sx={{ marginLeft: "2px", backgroundColor: '#fff', border: '2px dashed #008b4b', maxWidth: "100%" }}>
+      <Grid container spacing={3} sx={{ marginLeft: "2px", backgroundColor: '#fff', border: '2px dashed #FFC1C1', maxWidth: "100%" }}>
         {promotions.length === 0 ? (
           <Typography variant="h6" sx={{ textAlign: 'center', width: '100%', py: 3 }}>
             Không có sản phẩm khuyến mãi
@@ -158,7 +158,7 @@ const Promotion = () => {
                       </Typography>
                       <Button
                         variant="contained"
-                        sx={{ mt: 2, backgroundColor: '#008000', color: '#fff', fontSize: '14px' }}
+                        sx={{ mt: 2, backgroundColor: '#FFC1C1', color: '#fff', fontSize: '14px' }}
                         onClick={() => handleAddToCart(item.id)}
                       >
                         Thêm vào giỏ

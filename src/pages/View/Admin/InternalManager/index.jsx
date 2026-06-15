@@ -85,27 +85,27 @@ const index = () => {
   };
 
   const handleSave = (updatedUser) => {
-    try{
-    setUsers((prevUsers) =>
-      prevUsers.map((user) =>
-        user.id === updatedUser.id ? updatedUser : user
-      )
-    );
-    setOpen(false);
-    setCurrentUser(null);
-    setSnackbar({
-      open: true,
-      message: "Cập nhật người dùng thành công!",
-      severity: "success",
-    });
+    try {
+      setUsers((prevUsers) =>
+        prevUsers.map((user) =>
+          user.id === updatedUser.id ? updatedUser : user
+        )
+      );
+      setOpen(false);
+      setCurrentUser(null);
+      setSnackbar({
+        open: true,
+        message: "Cập nhật người dùng thành công!",
+        severity: "success",
+      });
     } catch (error) {
       setSnackbar({
         open: true,
         message: "Quản lý chỉ được phép thay đổi thông tin của khách hàng.",
         severity: "error",
       });
+    }
   };
-}
 
   const handleDeleteClick = (user) => {
     setUserToDelete(user);
@@ -115,8 +115,7 @@ const index = () => {
   const handleConfirmDelete = async () => {
     try {
       const requesterId = localStorage.getItem('id');
-
-      await deleteUserAPI(userToDelete.id,requesterId); // Assuming deleteUserAPI takes user ID as argument
+      await deleteUserAPI(userToDelete.id, requesterId);
       setUsers((prevUsers) =>
         prevUsers.filter((user) => user.id !== userToDelete.id)
       );
@@ -150,17 +149,16 @@ const index = () => {
     setSearchTerm(e.target.value);
   };
 
-  
   const filteredUsers = users.filter((user) =>
     user.username.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
-  // Sort filteredUsers to prioritize users with role "Quản trị viên" first
   filteredUsers.sort((a, b) => {
     if (a.role.name === "Quản Trị Viên") return -1;
     if (b.role.name === "Quản Trị Viên") return 1;
     return 0;
   });
+
   return (
     <Dashboard>
       <UserManager>
@@ -205,10 +203,10 @@ const index = () => {
             </Button>
           </Grid>
         </Grid>
-        <TableContainer component={Paper} style={{ marginTop: 16 }}>
+        <StyledTableContainer component={Paper}>
           <StyledTable>
             <TableHead>
-              <StyledTableRow>
+              <TableRow>
                 <StyledTableCell align="center">ID</StyledTableCell>
                 <StyledTableCell align="center">Hình ảnh</StyledTableCell>
                 <StyledTableCell align="center">Tên người dùng</StyledTableCell>
@@ -216,14 +214,12 @@ const index = () => {
                 <StyledTableCell align="center">Ngày tạo</StyledTableCell>
                 <StyledTableCell align="center">Vai trò</StyledTableCell>
                 <StyledTableCell align="center">Tác vụ</StyledTableCell>
-              </StyledTableRow>
+              </TableRow>
             </TableHead>
             <TableBody>
               {filteredUsers.map((user) => (
-                <TableRow key={user?.id}>
-                  <TableCell align="center">
-                    {user?.id}
-                  </TableCell>
+                <StyledTableRow key={user?.id}>
+                  <TableCell align="center">{user?.id}</TableCell>
                   <TableCell align="center">
                     <img
                       src={user?.image}
@@ -231,18 +227,12 @@ const index = () => {
                       style={{ width: 50, height: 50, objectFit: "cover" }}
                     />
                   </TableCell>
-                  <TableCell align="center">
-                    {user?.username}
-                  </TableCell>
-                  <TableCell align="center">
-                    {user?.email}
-                  </TableCell>
+                  <TableCell align="center">{user?.username}</TableCell>
+                   <TableCell align="center">{user?.email}</TableCell>
                   <TableCell align="center">
                     {new Date(user?.createdAt).toLocaleDateString()}
                   </TableCell>
-                  <TableCell align="center">
-                    {user?.role.name}
-                  </TableCell>
+                  <TableCell align="center">{user?.role.name}</TableCell>
                   <TableCell align="center">
                     <IconButton
                       color="secondary"
@@ -257,13 +247,13 @@ const index = () => {
                       <DeleteOutlineOutlinedIcon />
                     </IconButton>
                   </TableCell>
-                </TableRow>
+                </StyledTableRow>
               ))}
             </TableBody>
           </StyledTable>
-        </TableContainer>
+        </StyledTableContainer>
       </UserManager>
-        <InternalEdit
+      <InternalEdit
         open={open}
         onClose={handleClose}
         user={currentUser}
@@ -301,7 +291,6 @@ const index = () => {
           {snackbar.message}
         </Alert>
       </Snackbar>
-      {/* Add user edit dialog component here */}
     </Dashboard>
   );
 };
@@ -314,27 +303,63 @@ const UserManager = styled.div`
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 `;
 
-const StyledTableCell = styled(TableCell)`
+const StyledTableContainer = styled(TableContainer)`
+  margin-top: 16px;
+  border-radius: 8px;
+  overflow: hidden;
 `;
 
 const StyledTable = styled.table`
   width: 100%;
   border-collapse: collapse;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 
   th,
   td {
-    padding: 12px;
-    border: 1px solid #ccc;
+    padding: 16px;
+    border: 1px solid #FFC1C1;
     text-align: center;
   }
 
   th {
-    background-color: #f8f9fa;
+    background-color: #FFC1C1;
+    font-weight: bold;
+    color: #333;
+  }
+
+  td {
+    color: #555;
+  }
+
+  tr:hover {
+    background-color: #f9f9f9;
+  }
+
+  &:last-child {
+    td {
+      border-bottom: none;
+    }
+  }
+`;
+
+const StyledTableCell = styled(TableCell)`
+  && {
+    border: 1px solid #FFC1C1;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
   }
 `;
 
 const StyledTableRow = styled(TableRow)`
-  &:nth-of-type(odd) {
+  &:not(:first-child) {
+    &:hover {
+      background-color: #f1f1f1;
+      cursor: pointer;
+    }
+  }
+
+  &:nth-of-type(even) {
     background-color: #f9f9f9;
   }
 `;

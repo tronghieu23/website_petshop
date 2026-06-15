@@ -21,13 +21,13 @@ import {
   DialogContentText,
   DialogTitle,
 } from "@mui/material";
-import { Edit, Delete, Visibility, FilterList, GetApp } from "@mui/icons-material";
+import { FilterList, GetApp } from "@mui/icons-material";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
 import Dashboard from "../index";
 import ProductEdit from "../ProductManager/Edit";
 import styled from "styled-components";
-import { fetchManagerAdminProductsAPI, deleteProductAPI } from '../../../../apis'; // Import deleteProductAPI
+import { fetchManagerAdminProductsAPI, deleteProductAPI } from '../../../../apis';
 
 const index = () => {
   const [projects, setProjects] = useState([]);
@@ -58,7 +58,6 @@ const index = () => {
         });
       }
     };
-
     fetchProducts();
   }, []);
 
@@ -107,9 +106,9 @@ const index = () => {
 
   const handleConfirmDelete = async () => {
     try {
-      await deleteProductAPI(projectToDelete.id); // Gọi API xóa
+      await deleteProductAPI(projectToDelete.id);
       setProjects((prevProjects) =>
-        prevProjects.filter((project) => project.id !== projectToDelete.id) // Cập nhật danh sách sản phẩm
+        prevProjects.filter((project) => project.id !== projectToDelete.id)
       );
       setConfirmDialogOpen(false);
       setProjectToDelete(null);
@@ -119,7 +118,7 @@ const index = () => {
         severity: "success",
       });
     } catch (error) {
-      console.error("Error deleting product:", error); // In ra lỗi nếu có
+      console.error("Error deleting product:", error);
       setSnackbar({
         open: true,
         message: "Xóa sản phẩm thất bại.",
@@ -127,7 +126,6 @@ const index = () => {
       });
     }
   };
-  
 
   const handleCloseConfirmDialog = () => {
     setConfirmDialogOpen(false);
@@ -146,21 +144,16 @@ const index = () => {
   const filteredProjects = projects.filter((project) => {
     const matchesSearch = project.name.toLowerCase().includes(searchTerm.toLowerCase());
     const matchesPrice = filterPrice === "" || project.price.toString().includes(filterPrice);
-  
-    // Kiểm tra sản phẩm đã hết hạn (so sánh với ngày hiện tại)
-    const isExpired = project.expirationDate ? new Date(project.expirationDate) < new Date() : false;
-    
-    return (matchesSearch && matchesPrice) || isExpired;
+    return matchesSearch && matchesPrice;
   });
-  
+
   const handleSearchChange = (e) => {
     setSearchTerm(e.target.value);
   };
 
-
   return (
     <Dashboard>
-      <ProductManager>
+      <ProductManagerContainer>
         <Typography variant="h6" style={{ marginBottom: 16 }}>
           Quản lý sản phẩm
         </Typography>
@@ -172,7 +165,7 @@ const index = () => {
               variant="outlined"
               value={searchTerm}
               onChange={handleSearchChange}
-            />  
+            />
           </Grid>
           <Grid item xs={12} sm={6}>
             <TextField
@@ -212,8 +205,9 @@ const index = () => {
             </Button>
           </Grid>
         </Grid>
-        <TableContainer component={Paper} style={{ marginTop: 16 }}>
-        <StyledTable>
+
+        <StyledTableContainer component={Paper}>
+          <StyledTable>
             <TableHead>
               <TableRow>
                 <StyledTableCell align="center">ID</StyledTableCell>
@@ -227,80 +221,64 @@ const index = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-  {filteredProjects.map((project) => {
-    const isExpired = project.expirationDate
-      ? new Date(project.expirationDate) < new Date()
-      : false;
+              {filteredProjects.map((project) => {
+                const isExpired = project.expirationDate
+                  ? new Date(project.expirationDate) < new Date()
+                  : false;
+                const isOutOfStock = project.quantity === 0;
 
-    const isOutOfStock = project.quantity === 0;
-
-    return (
-      <StyledTableRow
-        key={project.id}
-        className={`${isExpired ? "expired" : ""} ${
-          isOutOfStock ? "out-of-stock" : ""
-        }`}
-      >
-        <TableCell align="center">{project.id}</TableCell>
-        <TableCell align="center">
-          <img
-            src={project.image}
-            alt={project.name}
-            style={{
-              width: 50,
-              height: 50,
-              objectFit: "cover",
-            }}
-          />
-        </TableCell>
-        <TableCell align="center">{project.name}</TableCell>
-        <TableCell align="center">{project.description}</TableCell>
-        <TableCell align="center">
-          {project.price.toLocaleString("vi-VN", {
-            style: "currency",
-            currency: "VND",
-          })}
-        </TableCell>
-        <TableCell
-          align="center"
-          style={{ color: project.quantity === 0 ? "red" : "inherit" }}
-        >
-          {project.quantity === 0 ? "Hết hàng" : project.quantity}
-        </TableCell>
-        <TableCell align="center">
-          {isExpired ? (
-            <Typography color="error">Hết hạn</Typography>
-          ) : (
-            <Typography color="primary">Còn hiệu lực</Typography>
-          )}
-        </TableCell>
-        <TableCell align="center">
-          <IconButton
-            color="secondary"
-            onClick={() => handleEditClick(project)}
-          >
-            <EditCalendarOutlinedIcon />
-          </IconButton>
-          <IconButton
-            color="error"
-            onClick={() => handleDeleteClick(project)}
-          >
-            <DeleteOutlineOutlinedIcon />
-          </IconButton>
-        </TableCell>
-      </StyledTableRow>
-    );
-  })}
-</TableBody>
-
+                return (
+                  <StyledTableRow
+                    key={project.id}
+                    isExpired={isExpired}
+                    isOutOfStock={isOutOfStock}
+                  >
+                    <TableCell align="center">{project.id}</TableCell>
+                    <TableCell align="center">
+                      <img
+                        src={project.image}
+                        alt={project.name}
+                        style={{ width: 50, height: 50, objectFit: "cover" }}
+                      />
+                    </TableCell>
+                    <TableCell align="center">{project.name}</TableCell>
+                    <TableCell align="center">{project.description}</TableCell>
+                    <TableCell align="center">
+                      {project.price.toLocaleString("vi-VN", {
+                        style: "currency",
+                        currency: "VND",
+                      })}
+                    </TableCell>
+                    <TableCell
+                      align="center"
+                      style={{ color: project.quantity === 0 ? "red" : "inherit" }}
+                    >
+                      {project.quantity === 0 ? "Hết hàng" : project.quantity}
+                    </TableCell>
+                    <TableCell align="center">
+                      {isExpired ? (
+                        <Typography style={{ color: "red" }}>Hết hạn</Typography>
+                      ) : (
+                        <Typography style={{ color: "green" }}>Còn hiệu lực</Typography>
+                      )}
+                    </TableCell>
+                    <TableCell align="center">
+                      <IconButton color="secondary" onClick={() => handleEditClick(project)}>
+                        <EditCalendarOutlinedIcon />
+                      </IconButton>
+                      <IconButton color="error" onClick={() => handleDeleteClick(project)}>
+                        <DeleteOutlineOutlinedIcon />
+                      </IconButton>
+                    </TableCell>
+                  </StyledTableRow>
+                );
+              })}
+            </TableBody>
           </StyledTable>
-        </TableContainer>
-      </ProductManager>
+        </StyledTableContainer>
+      </ProductManagerContainer>
 
-      <Dialog
-        open={confirmDialogOpen}
-        onClose={() => setConfirmDialogOpen(false)}
-      >
+      <Dialog open={confirmDialogOpen} onClose={() => setConfirmDialogOpen(false)}>
         <DialogTitle>Xóa sản phẩm</DialogTitle>
         <DialogContent>
           <DialogContentText>
@@ -308,14 +286,11 @@ const index = () => {
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseConfirmDialog} color="primary">
-            Hủy
-          </Button>
-          <Button onClick={handleConfirmDelete} color="error">
-            Xóa
-          </Button>
+          <Button onClick={handleCloseConfirmDialog} color="primary">Hủy</Button>
+          <Button onClick={handleConfirmDelete} color="error">Xóa</Button>
         </DialogActions>
       </Dialog>
+
       <Snackbar
         open={snackbar.open}
         autoHideDuration={6000}
@@ -329,6 +304,7 @@ const index = () => {
           {snackbar.message}
         </Alert>
       </Snackbar>
+
       <ProductEdit
         open={open}
         onClose={handleClose}
@@ -340,37 +316,60 @@ const index = () => {
 };
 
 // Styled components
-const ProductManager = styled.div`
+const ProductManagerContainer = styled.div`
   padding: 20px;
   background: white;
   border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 `;
 
-const StyledTableRow = styled(TableRow)`
-  &.expired {
-    background-color: #ffcccc; /* Màu nền đỏ nhạt cho sản phẩm hết hạn */
-  }
-     &.out-of-stock {
-    background-color: #ffcccc; /* Màu nền đỏ nhạt cho sản phẩm hết hàng */
+const StyledTableContainer = styled(TableContainer)`
+  margin-top: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+`;
+
+// ✅ styled(Table) thay vì styled.table
+const StyledTable = styled(Table)`
+  width: 100%;
+`;
+
+const StyledTableCell = styled(TableCell)`
+  && {
+    border: 1px solid #ffc1c1;
+    padding: 8px;
+    text-align: center;
+    vertical-align: middle;
+    background-color: #ffc1c1;
+    font-weight: bold;
+    color: #333;
   }
 `;
 
-const StyledTableCell = styled(TableCell)``;
+// ✅ Dùng props thay vì className để tránh lỗi DOM
+const StyledTableRow = styled(TableRow)`
+  background-color: ${({ isExpired, isOutOfStock }) =>
+    isExpired || isOutOfStock ? "#C9E4D6" : "transparent"};
 
-const StyledTable = styled.table`
-  width: 100%;
-  border-collapse: collapse;
-
-  th,
-  td {
-    padding: 12px;
-    border: 1px solid #ccc;
-    text-align: center;
+  &:nth-of-type(even) {
+    background-color: ${({ isExpired, isOutOfStock }) =>
+      isExpired || isOutOfStock ? "#C9E4D6" : "#f9f9f9"};
   }
 
-  th {
-    background-color: #f8f9fa;
+  & td {
+    border: 1px solid #ffc1c1;
+    padding: 16px;
+    text-align: center;
+    color: #555;
+  }
+
+  &:hover td {
+    background-color: #f1f1f1;
+    cursor: pointer;
+  }
+
+  &:last-child td {
+    border-bottom: none;
   }
 `;
 

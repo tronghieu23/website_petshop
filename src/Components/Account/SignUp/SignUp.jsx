@@ -5,6 +5,8 @@ import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import AppBar from '../../AppBar/AppBar';
 import Footer from '../../Footer/Footer';
+import { Container, TextField, Button, Typography, Card, CardContent, Box, IconButton } from '@mui/material';
+import { Facebook, Google } from '@mui/icons-material';
 
 const SignUp = () => {
   const [formData, setFormData] = useState({
@@ -14,7 +16,7 @@ const SignUp = () => {
     confirmPassword: ''
   });
   const [error, setError] = useState(null);
-  const navigate = useNavigate(); // Initialize the useNavigate hook
+  const navigate = useNavigate();
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
@@ -26,98 +28,62 @@ const SignUp = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    
     if (formData.password !== formData.confirmPassword) {
       setError('Mật khẩu không khớp');
       return;
     }
-  
     try {
       const response = await signupAPI(formData);
-      
       if (response?.message) {
+        localStorage.setItem('username', formData.username);
         toast.success('Đăng ký thành công. Vui lòng kiểm tra email của bạn để xác nhận.');
-        navigate('/account/Login')
+        navigate('/account/Verify', { state: { email: formData.email } });
       } else {
         toast.error('Đăng ký thất bại. Vui lòng thử lại.');
       }
-      
     } catch (error) {
       setError('Đăng ký thất bại. Vui lòng thử lại.');
       toast.error('Đăng ký thất bại. Vui lòng thử lại.');
     }
-  }
-  
-
-  const handleFacebookLogin = () => {
-    // Handle Facebook login
-  };
-
-  const handleGoogleLogin = () => {
-    // Handle Google login
-  };
-
-  const linkStyle = {
-    color: '#f9ca24',
-    cursor: 'pointer',
   };
 
   return (
     <>
-    <AppBar />
-
-    <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', marginTop: '50px' }}>
-      <form style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '300px' }} onSubmit={handleSubmit}>
-        <button style={{ background: 'none', border: 'none', padding: '10px 20px', cursor: 'pointer', fontSize: '16px', fontWeight: 'bold', borderBottom: '2px solid #7bed9f' }}>
-          Đăng Ký
-        </button>
-        <input
-          type="text"
-          name="username"
-          placeholder="Nhập Tên Đăng Nhập"
-          value={formData.username}
-          onChange={handleInputChange}
-          required
-          style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc', borderRadius: '5px', boxSizing: 'border-box' }}
-        />
-        <input
-          type="email"
-          name="email"
-          placeholder="Nhập Email"
-          value={formData.email}
-          onChange={handleInputChange}
-          required
-          style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc', borderRadius: '5px', boxSizing: 'border-box' }}
-        />
-        <input
-          type="password"
-          name="password"
-          placeholder="Nhập Mật Khẩu"
-          value={formData.password}
-          onChange={handleInputChange}
-          required
-          style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc', borderRadius: '5px', boxSizing: 'border-box' }}
-        />
-        <input
-          type="password"
-          name="confirmPassword"
-          placeholder="Xác nhận Mật Khẩu"
-          value={formData.confirmPassword}
-          onChange={handleInputChange}
-          required
-          style={{ width: '100%', padding: '10px', marginBottom: '10px', border: '1px solid #ccc', borderRadius: '5px', boxSizing: 'border-box' }}
-        />
-        {error && <p style={{ color: 'red' }}>{error}</p>}
-        <button type="submit" style={{ padding: '10px 20px', border: 'none', borderRadius: '5px', backgroundColor: '#78e08f', color: 'white', cursor: 'pointer', fontSize: '16px', width: '100%', boxSizing: 'border-box' }}>Đăng Ký</button>
-      </form>
-      <p style={{ textAlign: 'center' }}>Hoặc đăng nhập bằng</p>
-      <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', cursor: 'pointer', justifyContent: 'space-between', width: '100px' }}>
-        <FaFacebook onClick={handleFacebookLogin} size={30} style={{ marginRight: '10px', color: '#3b5998' }} />
-        <FaGoogle onClick={handleGoogleLogin} size={30} style={{ color: '#db4a39' }} />
-      </div>
-      <p>Đã có tài khoản? <span style={linkStyle} onClick={() => navigate('/account/Login')}>Đăng nhập ngay</span></p>
-    </div>
-    <Footer/>
+      <AppBar />
+      <Container maxWidth="xs" sx={{ mt: 4 }}>
+        <Card sx={{ p: 2, boxShadow: 2, borderRadius: 2 }}>
+          <CardContent>
+            <Typography variant="h6" align="center" fontWeight="bold" gutterBottom>
+              Đăng Ký
+            </Typography>
+            <form onSubmit={handleSubmit}>
+              <TextField fullWidth margin="dense" label="Tên Đăng Nhập" name="username" value={formData.username} onChange={handleInputChange} required />
+              <TextField fullWidth margin="dense" type="email" label="Email" name="email" value={formData.email} onChange={handleInputChange} required />
+              <TextField fullWidth margin="dense" type="password" label="Mật Khẩu" name="password" value={formData.password} onChange={handleInputChange} required />
+              <TextField fullWidth margin="dense" type="password" label="Xác nhận Mật Khẩu" name="confirmPassword" value={formData.confirmPassword} onChange={handleInputChange} required />
+              {error && <Typography color="error" variant="body2">{error}</Typography>}
+              <Button type="submit" variant="contained" color="primary" fullWidth sx={{ mt: 1 }}>
+                Đăng Ký
+              </Button>
+            </form>
+            <Typography align="center" sx={{ mt: 1 }}>
+              Hoặc đăng nhập bằng
+            </Typography>
+            <Box display="flex" justifyContent="center" gap={1} mt={1}>
+              <IconButton onClick={() => {}}>
+                <Facebook fontSize="small" sx={{ color: '#1877F2' }} />
+              </IconButton>
+              <IconButton onClick={() => {}}>
+                <Google fontSize="small" sx={{ color: '#DB4437' }} />
+              </IconButton>
+            </Box>
+            <Typography align="center" sx={{ mt: 1 }}>
+              Đã có tài khoản? <span style={{ color: '#1976d2', cursor: 'pointer' }} onClick={() => navigate('/account/Login')}>Đăng nhập ngay</span>
+            </Typography>
+          </CardContent>
+        </Card>
+      </Container>
+      <Footer />
     </>
   );
 };

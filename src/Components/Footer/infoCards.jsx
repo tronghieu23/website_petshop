@@ -2,22 +2,22 @@ import React from 'react';
 
 const infoCards = [
   {
-    icon: 'https://bizweb.dktcdn.net/100/514/629/themes/951567/assets/ser_1.png?1716945232631',
+    icon: 'https://res.cloudinary.com/dvvshh1iv/image/upload/v1743268396/freeshipicon_rfglok.png',
     title: 'Vận chuyển miễn phí',
     description: 'Hóa đơn trên 5 triệu'
   },
   {
-    icon: "//bizweb.dktcdn.net/100/514/629/themes/951567/assets/ser_2.png?1716945232631", 
+    icon: "https://res.cloudinary.com/dvvshh1iv/image/upload/v1743268976/exchangeicon_lk4qr6.png", 
     title: 'Đổi trả miễn phí',
     description: 'Trong vòng 7 ngày'
   },
   {
-    icon: "https://bizweb.dktcdn.net/100/514/629/themes/951567/assets/ser_3.png?1716945232631",
+    icon: "https://res.cloudinary.com/dvvshh1iv/image/upload/v1743269149/refundicon_g4zgd4.png",
     title: '100% Hoàn tiền',
     description: 'Nếu sản phẩm lỗi'
   },
   {
-    icon: "https://bizweb.dktcdn.net/100/514/629/themes/951567/assets/ser_4.png?1716945232631",
+    icon: "https://res.cloudinary.com/dvvshh1iv/image/upload/v1743269438/supporticon_wpgxwg.png",
     title: 'Hotline: 1900 6750',
     description: 'Hỗ trợ 24/7'
   }
@@ -28,7 +28,7 @@ const InfoCards = () => {
     <div style={styles.container}>
       {infoCards.map((card, index) => (
         <div key={index} style={styles.card}>
-          <img src={card.icon} alt={card.title} style={{...styles.icon, width: '60px', height: '60px'}} />
+          <img src={card.icon} alt={card.title} style={{...styles.icon, width: '80px', height: '80px'}} />
           <div style={styles.textContainer}>
             <h4 style={styles.title}>{card.title}</h4>
             <p style={styles.description}>{card.description}</p>
@@ -49,6 +49,7 @@ const styles = {
     margin: '0 auto',
     boxSizing: 'border-box',
     overflow: 'hidden',
+    marginTop: '5px',
   },
   card: {
     display: 'flex',
@@ -66,7 +67,7 @@ const styles = {
     marginBottom: '10px',
     objectFit: 'cover',
     borderRadius: '50%',
-    border: '2px solid #2ecc71'
+    border: '2px solid #FFC1C1'
   },
   textContainer: {
     display: 'flex',
@@ -76,7 +77,7 @@ const styles = {
   title: {
     fontWeight: 'bold',
     marginBottom: '5px',
-    color : '#2ecc71',
+    color : '#FFC1C1',
     fontSize: '16px'
   },
   description: {

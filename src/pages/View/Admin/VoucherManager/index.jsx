@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import {
   Paper,
   Table,
@@ -23,7 +23,7 @@ import {
   Switch,
   FormControlLabel,
 } from "@mui/material";
-import { Edit, Delete, FilterList, GetApp } from "@mui/icons-material";
+import { FilterList, GetApp } from "@mui/icons-material";
 import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import EditCalendarOutlinedIcon from '@mui/icons-material/EditCalendarOutlined';
 import styled from "styled-components";
@@ -171,26 +171,27 @@ const VoucherManager = () => {
               component={Link}
               to="/admin/vouchermanager/create"
             >
-              Thêm phiếu giảm giá 
+              Thêm phiếu giảm giá
             </Button>
           </Grid>
         </Grid>
-        <TableContainer component={Paper} style={{ marginTop: 16 }}>
+
+        <StyledTableContainer component={Paper}>
           <StyledTable>
             <TableHead>
               <TableRow>
-                <TableCell align="center">ID</TableCell>
-                <TableCell align="center">Mã</TableCell>
-                <TableCell align="center">Giảm giá (%)</TableCell>
-                <TableCell align="center">Ngày hết hạn</TableCell>
-                <TableCell align="center">Mô tả</TableCell>
-                <TableCell align="center">Kích hoạt</TableCell>
-                <TableCell align="center">Tác vụ</TableCell>
+                <StyledTableCell align="center">ID</StyledTableCell>
+                <StyledTableCell align="center">Mã</StyledTableCell>
+                <StyledTableCell align="center">Giảm giá (%)</StyledTableCell>
+                <StyledTableCell align="center">Ngày hết hạn</StyledTableCell>
+                <StyledTableCell align="center">Mô tả</StyledTableCell>
+                <StyledTableCell align="center">Kích hoạt</StyledTableCell>
+                <StyledTableCell align="center">Tác vụ</StyledTableCell>
               </TableRow>
             </TableHead>
             <TableBody>
               {filteredVouchers.map((voucherItem) => (
-                <TableRow key={voucherItem.id}>
+                <StyledTableRow key={voucherItem.id}>
                   <TableCell align="center">{voucherItem.id}</TableCell>
                   <TableCell align="center">{voucherItem.code}</TableCell>
                   <TableCell align="center">{voucherItem.discount}</TableCell>
@@ -200,7 +201,7 @@ const VoucherManager = () => {
                     <FormControlLabel
                       control={
                         <Switch
-                          checked={voucherItem.active}
+                          checked={Boolean(voucherItem.active)}
                           onChange={(e) => {
                             const updatedVoucher = { ...voucherItem, active: e.target.checked };
                             handleSave(updatedVoucher);
@@ -225,13 +226,12 @@ const VoucherManager = () => {
                       <DeleteOutlineOutlinedIcon />
                     </IconButton>
                   </TableCell>
-                </TableRow>
+                </StyledTableRow>
               ))}
             </TableBody>
           </StyledTable>
-        </TableContainer>
+        </StyledTableContainer>
 
-        {/* Confirm delete dialog */}
         <Dialog open={confirmDialogOpen} onClose={handleCloseConfirmDialog}>
           <DialogTitle>Xóa voucher</DialogTitle>
           <DialogContent>
@@ -249,7 +249,6 @@ const VoucherManager = () => {
           </DialogActions>
         </Dialog>
 
-        {/* Snackbar */}
         <Snackbar
           open={snackbar.open}
           autoHideDuration={6000}
@@ -264,11 +263,10 @@ const VoucherManager = () => {
           </Alert>
         </Snackbar>
 
-        {/* Voucher edit dialog */}
         <VoucherEdit
           open={open}
           onClose={handleClose}
-          voucherItem={currentVoucher} // Sử dụng đúng thuộc tính
+          voucherItem={currentVoucher}
           onSave={handleSave}
         />
       </VoucherManagerContainer>
@@ -284,19 +282,50 @@ const VoucherManagerContainer = styled.div`
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 `;
 
-const StyledTable = styled.table`
+const StyledTableContainer = styled(TableContainer)`
+  margin-top: 16px;
+  border-radius: 8px;
+  overflow: hidden;
+`;
+
+// ✅ Đổi từ styled.table → styled(Table)
+const StyledTable = styled(Table)`
   width: 100%;
   border-collapse: collapse;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+`;
 
-  th,
-  td {
-    padding: 12px;
-    border: 1px solid #ccc;
+const StyledTableCell = styled(TableCell)`
+  && {
+    border: 1px solid #ffc1c1;
+    padding: 8px;
     text-align: center;
+    vertical-align: middle;
+    background-color: #ffc1c1;
+    font-weight: bold;
+    color: #333;
+  }
+`;
+
+const StyledTableRow = styled(TableRow)`
+  & td {
+    border: 1px solid #ffc1c1;
+    padding: 16px;
+    text-align: center;
+    color: #555;
   }
 
-  th {
-    background-color: #f8f9fa;
+  &:hover td {
+    background-color: #f9f9f9;
+    cursor: pointer;
+  }
+
+  &:nth-of-type(even) td {
+    background-color: #f9f9f9;
+  }
+
+  &:last-child td {
+    border-bottom: none;
   }
 `;
 

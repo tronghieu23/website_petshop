@@ -6,7 +6,7 @@ function AboutStore() {
     display: 'flex',
     justifyContent: 'space-around',
     alignItems: 'center',
-    backgroundColor: '#3e8e41',
+    backgroundColor: '#FFC1C1',
      paddingTop : '30px',
     paddingBottom : '30px',
     width: '100%',
@@ -16,7 +16,7 @@ function AboutStore() {
 
   const itemStyle = {
     textAlign: 'center',
-    color: '#f1c40f'
+    color: 'white'
   };
 
   const numberStyle = {
